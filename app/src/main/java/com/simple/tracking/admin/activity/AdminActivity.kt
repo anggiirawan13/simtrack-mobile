@@ -1,4 +1,4 @@
-package com.simple.tracking
+package com.simple.tracking.admin.activity
 
 import android.os.Bundle
 import android.widget.TextView
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.simple.tracking.R
+import com.simple.tracking.admin.adapter.FragmentPagerAdapter
 
 class AdminActivity : AppCompatActivity() {
 
@@ -18,7 +20,7 @@ class AdminActivity : AppCompatActivity() {
         val tabTitles = arrayOf("U S E R", "D A S H B O A R D", "P R O F I L E", "D E L I V E R Y", "S H I P P E R")
         val textView = findViewById<TextView>(R.id.textView18)
 
-        viewPager.adapter = AdminFragmentPagerAdapter(this)
+        viewPager.adapter = FragmentPagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {

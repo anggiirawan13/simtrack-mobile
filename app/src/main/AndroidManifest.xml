@@ -13,9 +13,60 @@
         android:theme="@style/Theme.Simtrack"
         tools:targetApi="31">
         <activity
-            android:name=".AdminActivity"
+            android:name=".admin.activity.delivery.AdminViewDeliveryRecipientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminViewDeliveryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminUpdateDeliveryRecipientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminUpdateDeliveryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminCreateDeliveryRecipientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminCreateDeliveryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminUpdateDeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.delivery.AdminCreateDeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.shipper.AdminViewShipperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.shipper.AdminUpdateShipperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.shipper.AdminCreateShipperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.user.AdminUpdateUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ConfirmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.user.AdminCreateUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.user.AdminViewUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.activity.AdminActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

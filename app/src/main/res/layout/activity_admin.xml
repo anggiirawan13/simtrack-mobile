@@ -78,4 +78,4 @@
         app:tabMode="fixed"
         app:tabTextAppearance="@style/TabCustomText" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
