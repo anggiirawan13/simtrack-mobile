@@ -1,10 +1,14 @@
 package com.simple.tracking.admin.activity.user
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.simple.tracking.R
+import com.simple.tracking.admin.adapter.FragmentPagerAdapter
+import com.simple.tracking.admin.fragment.UserFragment
 
 class AdminCreateUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +30,11 @@ class AdminCreateUserActivity : AppCompatActivity() {
 
         roleSpinner.setOnClickListener {
             roleSpinner.showDropDown()
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        btnBack.setOnClickListener {
+            finish()
         }
     }
 }

@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/btn_back"
         android:contentDescription="Icon Logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

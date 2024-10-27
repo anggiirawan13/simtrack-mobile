@@ -1,9 +1,13 @@
 package com.simple.tracking.admin.activity.user
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.simple.tracking.ConfirmActivity
 import com.simple.tracking.R
 
 class AdminUpdateUserActivity : AppCompatActivity() {
@@ -26,6 +30,19 @@ class AdminUpdateUserActivity : AppCompatActivity() {
 
         roleSpinner.setOnClickListener {
             roleSpinner.showDropDown()
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        val btnUpdate = findViewById<CardView>(R.id.btn_update)
+        btnUpdate.setOnClickListener {
+            val intent = Intent(this@AdminUpdateUserActivity, ConfirmActivity::class.java)
+            intent.putExtra("ACTION_TYPE", "UPDATE")
+            intent.putExtra("MENU_NAME", "USER")
+            startActivity(intent)
         }
     }
 }
