@@ -14,10 +14,12 @@
         tools:targetApi="31">
         <activity
             android:name=".admin.activity.delivery.AdminViewDeliveryRecipientActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".admin.activity.delivery.AdminViewDeliveryDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".admin.activity.delivery.AdminUpdateDeliveryRecipientActivity"
             android:exported="false" />
@@ -31,14 +33,9 @@
             android:name=".admin.activity.delivery.AdminCreateDeliveryDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".admin.activity.delivery.AdminUpdateDeliveryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".admin.activity.delivery.AdminCreateDeliveryActivity"
-            android:exported="false" />
-        <activity
             android:name=".admin.activity.shipper.AdminViewShipperActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".admin.activity.shipper.AdminUpdateShipperActivity"
             android:exported="false" />
@@ -59,7 +56,8 @@
             android:exported="false" />
         <activity
             android:name=".admin.activity.user.AdminViewUserActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".LogoutActivity"
             android:exported="false" />
