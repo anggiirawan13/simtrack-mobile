@@ -1,10 +1,12 @@
 package com.simple.tracking.admin.activity.delivery
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.simple.tracking.R
 import java.util.Calendar
@@ -58,6 +60,17 @@ class AdminCreateDeliveryDetailActivity : AppCompatActivity() {
 
         editTextDate3.setOnClickListener {
             showDatePickerDialog(editTextDate3)
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back_delivery_detail_create)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        val btnNext = findViewById<ImageView>(R.id.btn_next_delivery_recipient_create)
+        btnNext.setOnClickListener {
+            val intent = Intent(this@AdminCreateDeliveryDetailActivity, AdminCreateDeliveryRecipientActivity::class.java)
+            startActivity(intent)
         }
     }
 

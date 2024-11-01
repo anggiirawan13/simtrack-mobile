@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back_delivery_detail_update"
         android:contentDescription="Icon Back"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/btn_next_delivery_recipient_update"
         android:contentDescription="Icon Next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

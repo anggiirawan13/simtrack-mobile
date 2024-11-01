@@ -32,12 +32,12 @@ class AdminViewUserActivity : AppCompatActivity() {
             roleSpinner.showDropDown()
         }
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        val btnBack = findViewById<ImageView>(R.id.btn_back_user_view)
         btnBack.setOnClickListener {
             finish()
         }
 
-        val btnDelete = findViewById<CardView>(R.id.btn_delete)
+        val btnDelete = findViewById<CardView>(R.id.btn_delete_user)
         btnDelete.setOnClickListener {
             val intent = Intent(this@AdminViewUserActivity, ConfirmActivity::class.java)
             intent.putExtra("ACTION_TYPE", "DELETE")
@@ -45,7 +45,7 @@ class AdminViewUserActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val btnUpdate = findViewById<ImageView>(R.id.imageView)
+        val btnUpdate = findViewById<CardView>(R.id.btn_save_update_user)
         btnUpdate.setOnClickListener {
             val intent = Intent(this@AdminViewUserActivity, AdminUpdateUserActivity::class.java)
             startActivity(intent)

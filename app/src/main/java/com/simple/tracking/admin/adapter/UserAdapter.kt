@@ -28,8 +28,8 @@ class UserAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserA
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList[position]
         holder.numberText.text = (position + 1).toString()
-        holder.titleText.text = user.name
-        holder.subtitleText.text = user.deviceMapping
+        holder.titleText.text = user.fullname
+        holder.subtitleText.text = user.username
 
         if (position % 2 == 0) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,

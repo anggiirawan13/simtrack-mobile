@@ -1,12 +1,17 @@
 package com.simple.tracking.admin.activity.delivery
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.simple.tracking.ConfirmActivity
 import com.simple.tracking.R
+import com.simple.tracking.admin.activity.user.AdminUpdateUserActivity
 import java.util.Calendar
 
 class AdminViewDeliveryDetailActivity : AppCompatActivity() {
@@ -58,6 +63,31 @@ class AdminViewDeliveryDetailActivity : AppCompatActivity() {
 
         editTextDate3.setOnClickListener {
             showDatePickerDialog(editTextDate3)
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back_delivery_detail_view)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        val btnNext = findViewById<ImageView>(R.id.btn_next_delivery_recipient_view)
+        btnNext.setOnClickListener {
+            val intent = Intent(this@AdminViewDeliveryDetailActivity, AdminViewDeliveryRecipientActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnDelete = findViewById<CardView>(R.id.btn_delete_delivery_detail_view)
+        btnDelete.setOnClickListener {
+            val intent = Intent(this@AdminViewDeliveryDetailActivity, ConfirmActivity::class.java)
+            intent.putExtra("ACTION_TYPE", "DELETE")
+            intent.putExtra("MENU_NAME", "DELIVERY")
+            startActivity(intent)
+        }
+
+        val btnUpdate = findViewById<CardView>(R.id.btn_update_delivery_detail_view)
+        btnUpdate.setOnClickListener {
+            val intent = Intent(this@AdminViewDeliveryDetailActivity, AdminUpdateDeliveryDetailActivity::class.java)
+            startActivity(intent)
         }
     }
 

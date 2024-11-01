@@ -32,16 +32,16 @@ class AdminUpdateUserActivity : AppCompatActivity() {
             roleSpinner.showDropDown()
         }
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        val btnBack = findViewById<ImageView>(R.id.btn_back_update_user)
         btnBack.setOnClickListener {
             finish()
         }
 
-        val btnUpdate = findViewById<CardView>(R.id.btn_update)
+        val btnUpdate = findViewById<CardView>(R.id.btn_save_update_user)
         btnUpdate.setOnClickListener {
             val intent = Intent(this@AdminUpdateUserActivity, ConfirmActivity::class.java)
             intent.putExtra("ACTION_TYPE", "UPDATE")
-            intent.putExtra("MENU_NAME", "USER")
+            intent.putExtra("MENU_NAME", "SHIPPER")
             startActivity(intent)
         }
     }

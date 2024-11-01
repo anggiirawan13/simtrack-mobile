@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.simple.tracking.R
 import java.util.Calendar
@@ -58,6 +59,11 @@ class AdminUpdateDeliveryDetailActivity : AppCompatActivity() {
 
         editTextDate3.setOnClickListener {
             showDatePickerDialog(editTextDate3)
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back_delivery_detail_update)
+        btnBack.setOnClickListener {
+            finish()
         }
     }
 

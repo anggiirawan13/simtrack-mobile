@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.simple.tracking.ConfirmActivity
 import com.simple.tracking.R
 import com.simple.tracking.admin.adapter.FragmentPagerAdapter
 import com.simple.tracking.admin.fragment.UserFragment
@@ -32,9 +34,17 @@ class AdminCreateUserActivity : AppCompatActivity() {
             roleSpinner.showDropDown()
         }
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        val btnBack = findViewById<ImageView>(R.id.btn_back_create_user)
         btnBack.setOnClickListener {
             finish()
+        }
+
+        val btnUpdate = findViewById<CardView>(R.id.btn_save_create_user)
+        btnUpdate.setOnClickListener {
+            val intent = Intent(this@AdminCreateUserActivity, ConfirmActivity::class.java)
+            intent.putExtra("ACTION_TYPE", "CREATE")
+            intent.putExtra("MENU_NAME", "USER")
+            startActivity(intent)
         }
     }
 }

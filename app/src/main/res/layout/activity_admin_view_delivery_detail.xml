@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back_delivery_detail_view"
         android:contentDescription="Icon Back"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/btn_next_delivery_recipient_view"
         android:contentDescription="Icon Next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -234,6 +234,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/btn_delete_delivery_detail_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="20dp"
@@ -253,6 +254,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/btn_update_delivery_detail_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="20dp"

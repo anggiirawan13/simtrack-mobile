@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back_detail"
         android:contentDescription="Icon Logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_gravity="center|center_horizontal|center_vertical"
         android:layout_weight="1"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="U S E R"
+        android:text="R E C I P I E N T"
         android:textColor="#27AE60"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -185,6 +185,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"

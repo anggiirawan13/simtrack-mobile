@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back_delivery_recipient_update"
         android:contentDescription="Icon Logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -185,6 +185,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_update_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"

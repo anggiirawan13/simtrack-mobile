@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_back_user_view"
         android:contentDescription="Icon Logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/btn_delete"
+                android:id="@+id/btn_delete_user"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="20dp"
@@ -226,10 +226,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_update_user"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:outlineAmbientShadowColor="#FFFFFF"
                 android:outlineSpotShadowColor="#FFFFFF"

@@ -1,9 +1,13 @@
 package com.simple.tracking.admin.activity.shipper
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.simple.tracking.ConfirmActivity
 import com.simple.tracking.R
 
 class AdminUpdateShipperActivity : AppCompatActivity() {
@@ -26,6 +30,19 @@ class AdminUpdateShipperActivity : AppCompatActivity() {
 
         roleSpinner.setOnClickListener {
             roleSpinner.showDropDown()
+        }
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back_shipper_update)
+        btnBack.setOnClickListener {
+            finish();
+        }
+
+        val btnUpdate = findViewById<CardView>(R.id.btn_save_update_shipper)
+        btnUpdate.setOnClickListener {
+            val intent = Intent(this@AdminUpdateShipperActivity, ConfirmActivity::class.java)
+            intent.putExtra("ACTION_TYPE", "UPDATE")
+            intent.putExtra("MENU_NAME", "SHIPPER")
+            startActivity(intent)
         }
     }
 }
