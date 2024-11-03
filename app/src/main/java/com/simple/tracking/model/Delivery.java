@@ -15,7 +15,7 @@ public class Delivery implements Serializable  {
     @SerializedName("shipper_id")
     private int shipperId;
     private String status;
-    @SerializedName("delivery_data")
+    @SerializedName("delivery_date")
     private Timestamp deliveryDate;
     @SerializedName("receive_date")
     private Timestamp receiveDate;

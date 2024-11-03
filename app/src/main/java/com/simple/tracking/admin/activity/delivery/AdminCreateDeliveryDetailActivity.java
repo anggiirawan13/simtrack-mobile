@@ -2,6 +2,9 @@ package com.simple.tracking.admin.activity.delivery;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +14,11 @@ import android.widget.ImageView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.R;
+import com.simple.tracking.model.Delivery;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
@@ -23,6 +31,8 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
     private EditText textInputReceiveDateCreate;
     private ImageView btnBack;
     private ImageView btnNext;
+    private ActivityResultLauncher<Intent> successActivityLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +104,6 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             }
         });
 
-        ImageView btnBack = findViewById(R.id.btn_back_delivery_detail_create);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,12 +111,45 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             }
         });
 
-        ImageView btnNext = findViewById(R.id.btn_next_delivery_recipient_create);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Delivery delivery = new Delivery();
+                delivery.setDeliveryNumber(textInputDeliveryNumberCreate.getText().toString());
+                delivery.setCompanyName(textInputCompanyNameCreate.getText().toString());
+                delivery.setStatus(textInputStatusCreate.getText().toString());
+                delivery.setShipperId(Integer.parseInt(textInputShipperCreate.getText().toString()));
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    String deliveryDateString = textInputDeliveryDateCreate.getText().toString();
+                    if (!deliveryDateString.isEmpty()) {
+                        java.util.Date parsedDate = dateFormat.parse(deliveryDateString);
+                        Timestamp deliveryDateTimestamp = new Timestamp(parsedDate.getTime());
+                        delivery.setDeliveryDate(deliveryDateTimestamp);
+                    }
+
+                    String receiveDateString = textInputReceiveDateCreate.getText().toString();
+                    if (!receiveDateString.isEmpty()) {
+                        java.util.Date parsedDate = dateFormat.parse(receiveDateString);
+                        Timestamp receiveDateTimestamp = new Timestamp(parsedDate.getTime());
+                        delivery.setReceiveDate(receiveDateTimestamp);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(AdminCreateDeliveryDetailActivity.this, AdminCreateDeliveryRecipientActivity.class);
-                startActivity(intent);
+                intent.putExtra("DELIVERY_DATA", delivery);
+                successActivityLauncher.launch(intent);
+            }
+        });
+
+        successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                // Arahkan kembali ke UserFragment
+                finish(); // Menghentikan AdminCreateUserActivity
             }
         });
     }
