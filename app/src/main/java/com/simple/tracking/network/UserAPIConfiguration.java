@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserAPIConfiguration {
-    private static final String BASE_URL = "https://super-warthog-wondrous.ngrok-free.app/";
+    private static final String BASE_URL = "https://simtrack.up.railway.app/";
     private static Retrofit retrofit = null;
 
     // Synchronized method to create and get the Retrofit instance
