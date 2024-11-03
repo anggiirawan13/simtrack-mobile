@@ -14,13 +14,13 @@
         android:layout_gravity="center|center_vertical"
         android:layout_marginStart="20dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/dividerCreateDeliveryDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textViewDeliveryDetailCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal|center_vertical"
@@ -30,7 +30,7 @@
         android:textColor="#27AE60"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/dividerCreateDeliveryDetail"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,13 +43,13 @@
         android:layout_gravity="center|center_vertical"
         android:layout_marginEnd="20dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/dividerCreateDeliveryDetail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_next" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/dividerCreateDeliveryDetail"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="80dp"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollViewCreateDeliveryDetail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider3">
+        app:layout_constraintTop_toBottomOf="@id/dividerCreateDeliveryDetail">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -76,38 +76,40 @@
             android:paddingBottom="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
+                android:id="@+id/textInputLayoutDeliveryNumberCreateDeliveryDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/cardView"
+                app:layout_constraintEnd_toStartOf="@+id/btn_generate_create_delivery_detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputDeliveryNumberCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Get delivery number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
+                android:id="@+id/textInputLayoutCompanyNameCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDeliveryNumberCreateDeliveryDetail">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputCompanyNameCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter company name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout5"
+                android:id="@+id/textInputLayoutStatusCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
@@ -115,10 +117,10 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCompanyNameCreateDeliveryDetail">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/roleSpinner"
+                    android:id="@+id/textInputStatusCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
@@ -127,7 +129,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout12"
+                android:id="@+id/textInputLayoutShipperCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
@@ -135,10 +137,10 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutStatusCreateDeliveryDetail">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/roleSpinner2"
+                    android:id="@+id/textInputShipperCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
@@ -147,7 +149,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout9"
+                android:id="@+id/textInputLayoutDeliveryDateCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -155,10 +157,10 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout12">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutShipperCreateDeliveryDetail">
 
                 <EditText
-                    android:id="@+id/editTextDate2"
+                    android:id="@+id/textInputDeliveryDateCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -171,7 +173,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout10"
+                android:id="@+id/textInputLayoutReceiveDateCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -179,10 +181,10 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout9">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDeliveryDateCreateDeliveryDetail">
 
                 <EditText
-                    android:id="@+id/editTextDate3"
+                    android:id="@+id/textInputReceiveDateCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -194,15 +196,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout11"
+                android:id="@+id/textInputLayoutConfirmationCodeCreateDeliveryDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout10">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutReceiveDateCreateDeliveryDetail">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputConfirmationCodeCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Auto generate confirmation code" />
@@ -210,7 +213,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/btn_generate_create_delivery_detail"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="29dp"
@@ -221,7 +224,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/text_btn_generate_create_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"

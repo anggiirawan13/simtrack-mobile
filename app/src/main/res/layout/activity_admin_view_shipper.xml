@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <ImageView
-        android:id="@+id/btn_back_shipper_view"
+        android:id="@+id/btn_back_view_shipper"
+        android:contentDescription="Icon Back"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
         android:layout_marginStart="20dp"
         android:layout_weight="1"
-        android:contentDescription="Icon Logout"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/divider_admin_view_shipper"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.456"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        android:enabled="false" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/text_header_shipper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal|center_vertical"
@@ -31,23 +30,25 @@
         android:textColor="#27AE60"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/divider_admin_view_shipper"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:enabled="false" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/divider_admin_view_shipper"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="80dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:enabled="false" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scroll_view_shipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -55,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider3">
+        app:layout_constraintTop_toBottomOf="@id/divider_admin_view_shipper">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -64,82 +65,112 @@
             android:paddingBottom="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout5"
+                android:id="@+id/textInputLayoutUserIdView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
+                app:endIconDrawable="@drawable/ic_arrow_bottom"
+                app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/roleSpinner"
+                    android:id="@+id/textInputUserIdView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
                     android:hint="Select user"
-                    android:paddingLeft="16dp" />
+                    android:paddingLeft="16dp"
+                    android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout7"
+                android:id="@+id/textInputLayoutDeviceMappingView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUserIdView">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputDeviceMappingView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter device mapping" />
+                    android:hint="Enter device mapping"
+                    android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_delete_view_shipper"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:outlineAmbientShadowColor="#FFFFFF"
+                android:outlineSpotShadowColor="#FFFFFF"
+                app:cardBackgroundColor="#0000FF"
+                app:cardCornerRadius="100dp"
+                app:cardElevation="1dp"
+                app:cardMaxElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDeviceMappingView">
+
+                <ImageView
+                    android:id="@+id/image_delete_view_shipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_delete"
+                    android:enabled="false" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_update_view_shipper"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:outlineAmbientShadowColor="#FFFFFF"
+                android:outlineSpotShadowColor="#FFFFFF"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="100dp"
+                app:cardElevation="1dp"
+                app:cardMaxElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDeviceMappingView">
+
+                <ImageView
+                    android:id="@+id/image_view_view_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_update"
+                    android:enabled="false" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_view_shipper"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="#CB6040"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textInputLayoutDeviceMappingView">
+
+                <TextView
+                    android:id="@+id/text_btn_save_view_shipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="S A V E"
+                    android:textColor="#FFF"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:enabled="false" />
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_delete_shipper"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="20dp"
-        android:outlineAmbientShadowColor="#FFFFFF"
-        android:outlineSpotShadowColor="#FFFFFF"
-        app:cardBackgroundColor="#0000FF"
-        app:cardCornerRadius="100dp"
-        app:cardElevation="1dp"
-        app:cardMaxElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2">
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_delete" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_update_shipper"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:outlineAmbientShadowColor="#FFFFFF"
-        android:outlineSpotShadowColor="#FFFFFF"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="100dp"
-        app:cardElevation="1dp"
-        app:cardMaxElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_update" />
-    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
