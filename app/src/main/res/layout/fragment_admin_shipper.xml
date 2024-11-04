@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:hint="Search"
         app:endIconMode="custom"
-        app:layout_constraintBottom_toTopOf="@id/filter_bar"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewShipper"
         app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
