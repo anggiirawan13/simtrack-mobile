@@ -5,6 +5,8 @@ import android.content.Intent;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.simple.tracking.ConfirmActivity;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryRecipientActivity;
+import com.simple.tracking.admin.activity.user.AdminCreateUserActivity;
 import com.simple.tracking.model.Address;
 import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.DeliveryRecipient;
@@ -61,42 +64,64 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
         textInputPostalCodeCreate = findViewById(R.id.textInputPostalCodeCreateDeliveryRecipient);
         btnSaveCreateDeliveryRecipientCreate = findViewById(R.id.btn_save_create_delivery_recipient);
 
-        btnBackCreateDeliveryRecipientCreate.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminCreateDeliveryRecipientActivity.this, AdminCreateDeliveryDetailActivity.class);
-            startActivity(intent);
-        });
+        loadInputData();
 
-        btnSaveCreateDeliveryRecipientCreate.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminCreateDeliveryRecipientActivity.this, ConfirmActivity.class);
-            intent.putExtra("ACTION_TYPE", "CREATE");
-            intent.putExtra("MENU_NAME", "DELIVERY");
-            startActivity(intent);
+        btnBackCreateDeliveryRecipientCreate.setOnClickListener(v -> {
+            saveInputData();
+            finish();
         });
 
         btnSaveCreateDeliveryRecipientCreate.setOnClickListener(this);
 
         successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
+                setResult(RESULT_OK);
                 // Arahkan kembali ke DeliveryFragment
                 finish(); // Menghentikan AdminCreateDeliveryRecipientActivity
             }
         });
     }
 
+    private void saveInputData() {
+        getSharedPreferences("delivery_prefs", MODE_PRIVATE)
+                .edit()
+                .putString("fullname", textInputFullnameCreate.getText().toString())
+                .putString("whatsapp", textInputWhatsappCreate.getText().toString())
+                .putString("address", textInputAddressCreate.getText().toString())
+                .putString("subDistrict", textInputSubDistrictCreate.getText().toString())
+                .putString("district", textInputDistrictCreate.getText().toString())
+                .putString("city", textInputCityCreate.getText().toString())
+                .putString("province", textInputProvinceCreate.getText().toString())
+                .putString("postalCode", textInputPostalCodeCreate.getText().toString())
+                .apply();
+    }
+
+    private void loadInputData() {
+        SharedPreferences prefs = getSharedPreferences("delivery_prefs", MODE_PRIVATE);
+        if (prefs != null && prefs.contains("fullname")) {
+            textInputFullnameCreate.setText(prefs.getString("fullname", ""));
+            textInputWhatsappCreate.setText(prefs.getString("whatsapp", ""));
+            textInputAddressCreate.setText(prefs.getString("address", ""));
+            textInputSubDistrictCreate.setText(prefs.getString("subDistrict", ""));
+            textInputDistrictCreate.setText(prefs.getString("district", ""));
+            textInputCityCreate.setText(prefs.getString("city", ""));
+            textInputProvinceCreate.setText(prefs.getString("province", ""));
+            textInputPostalCodeCreate.setText(prefs.getString("postalCode", ""));
+        }
+    }
+
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_create_delivery_recipient) {
-            Address address = new Address();
-            address.setStreet(textInputAddressCreate.getText().toString());
-            address.setSubDistrict(textInputSubDistrictCreate.getText().toString());
-            address.setDistrict(textInputDistrictCreate.getText().toString());
-            address.setCity(textInputCityCreate.getText().toString());
-            address.setProvince(textInputProvinceCreate.getText().toString());
-            address.setPostalCode(textInputPostalCodeCreate.getText().toString());
-
             DeliveryRecipient recipient = new DeliveryRecipient();
             recipient.setName(textInputFullnameCreate.getText().toString());
-            recipient.setAddress(address);
+            recipient.setStreet(textInputAddressCreate.getText().toString());
+            recipient.setSubDistrict(textInputSubDistrictCreate.getText().toString());
+            recipient.setDistrict(textInputDistrictCreate.getText().toString());
+            recipient.setCity(textInputCityCreate.getText().toString());
+            recipient.setProvince(textInputProvinceCreate.getText().toString());
+            recipient.setPostalCode(textInputPostalCodeCreate.getText().toString());
 
             Delivery delivery = (Delivery) getIntent().getSerializableExtra("DELIVERY_DATA");
             delivery.setRecipient(recipient);

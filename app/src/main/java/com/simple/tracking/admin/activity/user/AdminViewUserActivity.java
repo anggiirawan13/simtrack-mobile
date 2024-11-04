@@ -34,9 +34,7 @@ import retrofit2.Response;
 public class AdminViewUserActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputEditText textInputFullnameView;
     private TextInputEditText textInputUsernameView;
-
     private TextInputEditText textInputPasswordView;
-
     private MaterialAutoCompleteTextView textInputRoleView;
     private TextInputEditText textInputAddressView;
     private TextInputEditText textInputSubDistrictView;
@@ -104,7 +102,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
                 // Arahkan kembali ke UserFragment
-                setResult(RESULT_OK, new Intent().putExtra("MENU_NAME", getIntent().getStringExtra("MENU_NAME")));
+                setResult(RESULT_OK);
                 finish(); // Menghentikan AdminCreateUserActivity
             }
         });

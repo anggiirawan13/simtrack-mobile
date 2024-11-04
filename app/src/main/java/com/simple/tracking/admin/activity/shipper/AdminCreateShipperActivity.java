@@ -120,13 +120,6 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
         ArrayAdapter<User> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, users);
         textInputUserIdCreate.setAdapter(adapter);
 
-        textInputUserIdCreate.setOnItemClickListener((parent, view, position, id) -> {
-            // Get the selected user directly from the parent
-            User selectedUser = (User) parent.getItemAtPosition(position);
-            // No need to setText here, just log for debugging
-            Log.d("Selected User", "User selected: " + selectedUser.getFullname());
-        });
-
         // Open the dropdown when the text field is clicked
         textInputUserIdCreate.setOnClickListener(v -> {
             if (adapter.getCount() > 0) {
@@ -151,8 +144,6 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
 
             // Check if selected user is found
             if (selectedUser != null) {
-                Log.d("Selected User", selectedUser.toString());
-
                 Shipper shipper = new Shipper();
                 shipper.setUserId(selectedUser.getId());
                 shipper.setDeviceMapping(textInputDeviceMappingCreate.getText().toString());

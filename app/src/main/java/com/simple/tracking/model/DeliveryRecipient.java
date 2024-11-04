@@ -4,13 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class DeliveryRecipient implements Serializable {
+public class DeliveryRecipient extends Address implements Serializable {
 
     private int id;
     @SerializedName("delivery_number")
     private String deliveryNumber;
     private String name;
-    private Address address;
 
     public int getId() {
         return id;
@@ -36,11 +35,4 @@ public class DeliveryRecipient implements Serializable {
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

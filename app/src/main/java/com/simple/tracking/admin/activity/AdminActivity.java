@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.adapter.FragmentPagerAdapter;
+import com.simple.tracking.admin.adapter.ShipperFragmentPagerAdapter;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -67,6 +68,7 @@ public class AdminActivity extends AppCompatActivity {
 
         int selectedTab = getIntent().getIntExtra("DEFAULT_TAB", 1);
         viewPager.setCurrentItem(selectedTab, false);
+        viewPager.setUserInputEnabled(false);
         textView.setText(tabTitles[selectedTab]);
     }
 }

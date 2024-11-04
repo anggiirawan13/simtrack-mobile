@@ -72,7 +72,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
         successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
                 // Arahkan kembali ke ShipperFragment
-                setResult(RESULT_OK, new Intent().putExtra("MENU_NAME", getIntent().getStringExtra("MENU_NAME")));
+                setResult(RESULT_OK);
                 finish(); // Menghentikan AdminViewShipperActivity
             }
         });

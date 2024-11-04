@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.admin.activity.AdminActivity;
 import com.simple.tracking.MainActivity;
+import com.simple.tracking.admin.activity.ShipperActivity;
 import com.simple.tracking.admin.fragment.DeliveryFragment;
 import com.simple.tracking.admin.fragment.ShipperFragment;
 import com.simple.tracking.admin.fragment.UserFragment;
@@ -61,7 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (response.isSuccessful()) {
                         BaseResponse<Auth> baseResponse = response.body();
                         if (baseResponse != null && baseResponse.isSuccess()) {
-                            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                            String userRole = baseResponse.getData().getRole();
+                            Intent intent = null;
+                            if (userRole.toUpperCase().equals("SHIPPER")) {
+                                intent = new Intent(MainActivity.this, ShipperActivity.class);
+                            } else {
+                                intent = new Intent(MainActivity.this, AdminActivity.class);
+                            }
+
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Username atau Password Salah!", Toast.LENGTH_SHORT).show();

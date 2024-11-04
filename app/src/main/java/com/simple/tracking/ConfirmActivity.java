@@ -3,9 +3,11 @@ package com.simple.tracking;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
+import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryRecipientActivity;
 import com.simple.tracking.admin.activity.shipper.AdminCreateShipperActivity;
 import com.simple.tracking.admin.activity.shipper.AdminViewShipperActivity;
 import com.simple.tracking.admin.activity.user.AdminCreateUserActivity;
@@ -72,15 +74,27 @@ public class ConfirmActivity extends AppCompatActivity {
                         }
                         break;
                     case "DELIVERY":
-                        Delivery delivery = (Delivery) getIntent().getSerializableExtra("DELIVERY_DATA");
-                        if (delivery != null) {
-                            // Handle delivery creation here
+                        if (actionType.equals("CREATE")) {
+                            Delivery delivery = (Delivery) getIntent().getSerializableExtra("DELIVERY_DATA");
+                            AdminCreateDeliveryRecipientActivity create = new AdminCreateDeliveryRecipientActivity();
+                            SharedPreferences prefs = getSharedPreferences("delivery_prefs", MODE_PRIVATE);
+                            prefs.edit().clear().apply();
+                            create.createDelivery(delivery);  // Pastikan untuk mengelola panggilan ini dengan baik
+                        } else if (actionType.equals("UPDATE")) {
+                            Delivery delivery = (Delivery) getIntent().getSerializableExtra("DELIVERY_DATA");
+                            AdminCreateDeliveryRecipientActivity view = new AdminCreateDeliveryRecipientActivity();
+//                            view.updateDelivery(delivery.getId(), delivery);
+                        } else if (actionType.equals("DELETE")) {
+                            int id = getIntent().getIntExtra("DELIVERY_ID", 1);
+
+                            AdminCreateDeliveryRecipientActivity view = new AdminCreateDeliveryRecipientActivity();
+//                            view.deleteDelivery(id);
                         }
                         break;
                 }
             }
 
-            setResult(RESULT_OK, new Intent().putExtra("MENU_NAME", getIntent().getStringExtra("MENU_NAME")));
+            setResult(RESULT_OK);
             finish();
         });
 

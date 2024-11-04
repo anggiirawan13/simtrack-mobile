@@ -11,15 +11,28 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.R;
+import com.simple.tracking.admin.activity.shipper.AdminCreateShipperActivity;
 import com.simple.tracking.model.Delivery;
+import com.simple.tracking.model.Shipper;
+import com.simple.tracking.model.User;
+import com.simple.tracking.network.BaseResponse;
+import com.simple.tracking.network.ShipperAPIConfiguration;
+import com.simple.tracking.network.UserAPIConfiguration;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
 
@@ -33,6 +46,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
     private ImageView btnNext;
     private ActivityResultLauncher<Intent> successActivityLauncher;
 
+    private List<Shipper> shipperList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +83,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             }
         });
 
-        String[] shippers = {"Shipper 1", "Shipper 2", "Shipper 3"};
-
-        ArrayAdapter<String> adapterShipper = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, shippers);
-        textInputShipperCreate.setAdapter(adapterShipper);
-
-        textInputShipperCreate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    textInputShipperCreate.showDropDown();
-                }
-            }
-        });
+        getShippers();
 
         textInputShipperCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +116,26 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String shipperName = textInputShipperCreate.getText().toString();
+
+                Shipper selectedShipper = shipperList
+                        .stream()
+                        .filter(shipper -> shipper.getUser().getFullname().equals(shipperName))
+                        .findFirst()
+                        .orElse(null);
+
                 Delivery delivery = new Delivery();
                 delivery.setDeliveryNumber(textInputDeliveryNumberCreate.getText().toString());
                 delivery.setCompanyName(textInputCompanyNameCreate.getText().toString());
                 delivery.setStatus(textInputStatusCreate.getText().toString());
-                delivery.setShipperId(Integer.parseInt(textInputShipperCreate.getText().toString()));
+
+                if (selectedShipper != null) {
+                    delivery.setShipperId(selectedShipper.getId());
+                }
+
+                delivery.setDeliveryDate(null);
+                delivery.setReceiveDate(null);
+
 
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -154,6 +171,43 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getShippers() {
+        Call<BaseResponse<List<Shipper>>> call = ShipperAPIConfiguration.getInstance().getShippers();
+        call.enqueue(new Callback<BaseResponse<List<Shipper>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Shipper>>> call, Response<BaseResponse<List<Shipper>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Shipper>> baseResponse = response.body();
+                    if (baseResponse != null && baseResponse.isSuccess()) {
+                        shipperList = baseResponse.getData();
+                        populateShipperDropdown(shipperList);
+                    } else {
+                        Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Failed to load users", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Response not successful", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Shipper>>> call, Throwable t) {
+                Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Failed to get users", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void populateShipperDropdown(List<Shipper> shippers) {
+        ArrayAdapter<Shipper> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, shippers);
+        textInputShipperCreate.setAdapter(adapter);
+
+        // Open the dropdown when the text field is clicked
+        textInputShipperCreate.setOnClickListener(v -> {
+            if (adapter.getCount() > 0) {
+                textInputShipperCreate.showDropDown();
+            }
+        });
+    }
+
     private void showDatePickerDialog(EditText editText) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -162,12 +216,10 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(android.widget.DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-                        String date = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
-                        editText.setText(date);
-                    }
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Set the date in yyyy-MM-dd format
+                    String date = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    editText.setText(date);
                 },
                 year,
                 month,
@@ -176,4 +228,5 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
 
         datePickerDialog.show();
     }
+
 }

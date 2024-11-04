@@ -48,11 +48,7 @@ public class Shipper implements Serializable {
 
     @Override
     public String toString() {
-        return "Shipper{" +
-                "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", deviceMapping='" + deviceMapping + '\'' +
-                '}';
+        return user.getFullname();
     }
 
 }
