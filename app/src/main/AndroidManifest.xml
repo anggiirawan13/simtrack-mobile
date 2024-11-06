@@ -41,13 +41,7 @@
             android:exported="false"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".admin.activity.shipper.AdminUpdateShipperActivity"
-            android:exported="false" />
-        <activity
             android:name=".admin.activity.shipper.AdminCreateShipperActivity"
-            android:exported="false" />
-        <activity
-            android:name=".admin.activity.user.AdminUpdateUserActivity"
             android:exported="false" />
         <activity
             android:name=".SuccessActivity"

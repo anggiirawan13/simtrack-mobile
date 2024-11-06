@@ -8,12 +8,19 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 import java.util.List;
 
 public interface UserAPI {
 
     @GET("/api/users")
-    Call<BaseResponse<List<User>>> getUsers();
+    Call<BaseResponse<List<User>>> getUsers(
+            @Query("q") String q,
+            @Query("paginate") boolean paginate,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 
     @POST("/api/users")
     Call<BaseResponse<User>> createUser(@Body User user); // Changed to return a single User

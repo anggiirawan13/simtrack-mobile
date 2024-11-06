@@ -11,11 +11,17 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ShipperAPI {
 
     @GET("/api/shippers")
-    Call<BaseResponse<List<Shipper>>> getShippers();
+    Call<BaseResponse<List<Shipper>>> getShippers(
+            @Query("q") String q,
+            @Query("paginate") boolean paginate,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 
     @POST("/api/shippers")
     Call<BaseResponse<Shipper>> createShipper(@Body Shipper shipper); // Changed to return a single Shipper

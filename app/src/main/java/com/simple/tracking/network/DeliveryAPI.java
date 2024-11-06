@@ -11,11 +11,24 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DeliveryAPI {
 
     @GET("/api/deliveries")
-    Call<BaseResponse<List<Delivery>>> getDeliveries();
+    Call<BaseResponse<List<Delivery>>> getDeliveries(
+            @Query("q") String q,
+            @Query("paginate") boolean paginate,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
+
+    @GET("/api/deliveries/filter/status")
+    Call<BaseResponse<List<Delivery>>> getDeliveriesByStatus(
+            @Query("q") String q,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 
     @POST("/api/deliveries")
     Call<BaseResponse<Delivery>> createDelivery(@Body Delivery delivery); // Changed to return a single Delivery

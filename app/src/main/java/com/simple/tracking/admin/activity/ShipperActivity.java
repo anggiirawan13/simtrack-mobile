@@ -1,24 +1,48 @@
 package com.simple.tracking.admin.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.simple.tracking.LogoutActivity;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.adapter.FragmentPagerAdapter;
 import com.simple.tracking.admin.adapter.ShipperFragmentPagerAdapter;
 
 public class ShipperActivity extends AppCompatActivity {
 
+    private ImageView btnLogout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Check if we are on the Home fragment
+                // Navigate to logout
+                Intent intent = new Intent(ShipperActivity.this, LogoutActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView btnLogout = findViewById(R.id.btn_logout);
+        btnLogout.setOnClickListener(v -> {
+            Intent intent = new Intent(ShipperActivity.this, LogoutActivity.class);
+            startActivity(intent);
+        });
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -27,6 +51,7 @@ public class ShipperActivity extends AppCompatActivity {
         String[] tabTitles = new String[]{"P R O F I L E", "D A S H B O A R D", "D E L I V E R Y"};
 
         viewPager.setAdapter(new ShipperFragmentPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(1);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {

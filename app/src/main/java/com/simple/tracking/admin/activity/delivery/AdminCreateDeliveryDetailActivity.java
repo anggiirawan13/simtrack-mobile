@@ -16,13 +16,10 @@ import android.widget.Toast;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.R;
-import com.simple.tracking.admin.activity.shipper.AdminCreateShipperActivity;
 import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.Shipper;
-import com.simple.tracking.model.User;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.ShipperAPIConfiguration;
-import com.simple.tracking.network.UserAPIConfiguration;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -172,7 +169,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
     }
 
     private void getShippers() {
-        Call<BaseResponse<List<Shipper>>> call = ShipperAPIConfiguration.getInstance().getShippers();
+        Call<BaseResponse<List<Shipper>>> call = ShipperAPIConfiguration.getInstance().getShippers(null, false, null, null);
         call.enqueue(new Callback<BaseResponse<List<Shipper>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Shipper>>> call, Response<BaseResponse<List<Shipper>>> response) {

@@ -11,22 +11,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.simple.tracking.ConfirmActivity;
 import com.simple.tracking.R;
-import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryRecipientActivity;
-import com.simple.tracking.admin.activity.user.AdminCreateUserActivity;
-import com.simple.tracking.model.Address;
 import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.DeliveryRecipient;
-import com.simple.tracking.model.Delivery;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.DeliveryAPIConfiguration;
 

@@ -92,7 +92,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
     }
 
     private void getUsers() {
-        Call<BaseResponse<List<User>>> call = UserAPIConfiguration.getInstance().getUsers();
+        Call<BaseResponse<List<User>>> call = UserAPIConfiguration.getInstance().getUsers(null, false, null, null);
         call.enqueue(new Callback<BaseResponse<List<User>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<User>>> call, Response<BaseResponse<List<User>>> response) {

@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.delivery.AdminViewDeliveryDetailActivity;
 import com.simple.tracking.model.Delivery;
+import com.simple.tracking.model.Delivery;
+
 import java.util.List;
 
 public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.DeliveryViewHolder> {
@@ -65,5 +67,18 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.Delive
     @Override
     public int getItemCount() {
         return deliveryList.size();
+    }
+
+    public void addDeliveries(List<Delivery> newDeliveries) {
+        int previousSize = deliveryList.size();
+        deliveryList.addAll(newDeliveries);
+        notifyItemRangeInserted(previousSize, newDeliveries.size());
+    }
+
+    public void clearDeliveries() {
+        if (deliveryList != null) {
+            deliveryList.clear();
+            notifyDataSetChanged();
+        }
     }
 }

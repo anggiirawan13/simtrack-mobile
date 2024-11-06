@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_input_layout"
+        android:id="@+id/textInputLayoutSearchShipper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -16,13 +15,13 @@
         android:hint="Search"
         app:endIconMode="custom"
         app:layout_constraintBottom_toTopOf="@id/recyclerViewShipper"
-        app:layout_constraintEnd_toStartOf="@+id/search_button"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search_shipper"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/search_input"
+            android:id="@+id/textInputSearchShipper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -34,7 +33,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/search_button"
+        android:id="@+id/btn_search_shipper"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
@@ -56,7 +55,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_input_layout" />
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutSearchShipper" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_add_shipper"

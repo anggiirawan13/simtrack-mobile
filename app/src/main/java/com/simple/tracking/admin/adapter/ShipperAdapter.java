@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.shipper.AdminViewShipperActivity;
 import com.simple.tracking.model.Shipper;
+import com.simple.tracking.model.Shipper;
 import java.util.List;
 
 public class ShipperAdapter extends RecyclerView.Adapter<ShipperAdapter.ShipperViewHolder> {
@@ -66,5 +67,18 @@ public class ShipperAdapter extends RecyclerView.Adapter<ShipperAdapter.ShipperV
     @Override
     public int getItemCount() {
         return shipperList.size();
+    }
+
+    public void addShippers(List<Shipper> newShippers) {
+        int previousSize = shipperList.size();
+        shipperList.addAll(newShippers);
+        notifyItemRangeInserted(previousSize, newShippers.size());
+    }
+
+    public void clearShippers() {
+        if (shipperList != null) {
+            shipperList.clear();
+            notifyDataSetChanged();
+        }
     }
 }
