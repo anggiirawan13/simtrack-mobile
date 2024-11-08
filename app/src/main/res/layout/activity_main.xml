@@ -63,7 +63,7 @@
             android:id="@+id/textInputUsernameLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Enter your username" />
+            android:hint="Username" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -84,7 +84,7 @@
             android:id="@+id/textInputPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Enter your password"
+            android:hint="Password"
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 

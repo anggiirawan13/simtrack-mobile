@@ -2,6 +2,9 @@ package com.simple.tracking.admin.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +44,9 @@ public class UserFragment extends Fragment {
     private boolean isLoading = false;
     private final int PAGE_SIZE = 10; // Adjust as needed
 
+    private final Handler searchHandler = new Handler();
+    private Runnable searchRunnable;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +73,42 @@ public class UserFragment extends Fragment {
                 userAdapter.clearUsers();
             }
 
-            getUsers(Objects.requireNonNull(textInputSearchUser.getText()).toString());
+            if (textInputSearchUser == null || textInputSearchUser.toString().trim().isEmpty()) {
+                getUsers(null);
+            } else {
+                getUsers(Objects.requireNonNull(textInputSearchUser.getText()).toString());
+            }
+        });
+
+        textInputSearchUser.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchRunnable != null) {
+                    searchHandler.removeCallbacks(searchRunnable);
+                }
+
+                searchRunnable = () -> {
+                    if (s.toString().isEmpty()) {
+                        currentPage = 1;
+                        isLastPage = false;
+                        isLoading = false;
+
+                        if (userAdapter != null) {
+                            userAdapter.clearUsers();
+                        }
+
+                        getUsers(null); // Fetch without a query to get all users
+                    }
+                };
+
+                searchHandler.postDelayed(searchRunnable, 1000); // 1-second delay
+            }
         });
 
         // Fetch users from the API
@@ -92,14 +133,6 @@ public class UserFragment extends Fragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        currentPage = 1;
-        isLastPage = false;
-        getUsers(null); // Fetch first page of users
     }
 
     private void getUsers(String query) {

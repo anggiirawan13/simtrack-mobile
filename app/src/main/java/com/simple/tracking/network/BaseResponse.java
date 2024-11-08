@@ -2,13 +2,13 @@ package com.simple.tracking.network;
 
 public class BaseResponse<T> {
     private boolean success;
-    private String messages;
+    private String message;
     private T data; // This can be a List<User> or another object
 
     // Constructor
-    public BaseResponse(boolean success, String messages, T data) {
+    public BaseResponse(boolean success, String message, T data) {
         this.success = success;
-        this.messages = messages;
+        this.message = message;
         this.data = data;
     }
 
@@ -17,8 +17,8 @@ public class BaseResponse<T> {
         return success;
     }
 
-    public String getMessages() {
-        return messages;
+    public String getMessage() {
+        return message;
     }
 
     public T getData() {
@@ -30,8 +30,8 @@ public class BaseResponse<T> {
         this.success = success;
     }
 
-    public void setMessages(String messages) {
-        this.messages = messages;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setData(T data) {

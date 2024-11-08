@@ -3,13 +3,13 @@ package com.simple.tracking.network;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginAPIConfiguration {
+public class DashboardAPIConfiguration {
     private static Retrofit retrofit = null;
 
     // Synchronized method to create and get the Retrofit instance
-    public static LoginAPI getInstance() {
+    public static DashboardAPI getInstance() {
         if (retrofit == null) {
-            synchronized (LoginAPIConfiguration.class) {
+            synchronized (DashboardAPIConfiguration.class) {
                 if (retrofit == null) {
                     retrofit = new Retrofit.Builder()
                             .baseUrl(Config.BASE_URL)
@@ -19,6 +19,6 @@ public class LoginAPIConfiguration {
             }
         }
 
-        return retrofit.create(LoginAPI.class);
+        return retrofit.create(DashboardAPI.class);
     }
 }

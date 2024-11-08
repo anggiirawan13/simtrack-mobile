@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.ConfirmActivity;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.adapter.UserAdapter;
 import com.simple.tracking.model.Address;
@@ -42,6 +43,8 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
     private TextInputEditText textInputCityView;
     private TextInputEditText textInputProvinceView;
     private TextInputEditText textInputPostalCodeView;
+    private CardView btnDelete;
+    private CardView btnUpdate;
 
     private ActivityResultLauncher<Intent> successActivityLauncher;
 
@@ -61,6 +64,20 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         textInputCityView = findViewById(R.id.textInputCityView);
         textInputProvinceView = findViewById(R.id.textInputProvinceView);
         textInputPostalCodeView = findViewById(R.id.textInputPostalCodeView);
+        btnDelete = findViewById(R.id.btn_delete_user_view);
+        btnUpdate = findViewById(R.id.btn_update_user_view);
+
+
+        int id = getIntent().getIntExtra("USER_ID", 1);
+        getUsers(id);
+
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        int userIdLogin = preferenceManager.getUserId();
+
+        if (userIdLogin == id) {
+            btnDelete.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
+        }
 
         String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
 
@@ -78,7 +95,6 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         ImageView btnBack = findViewById(R.id.btn_back_view_user);
         btnBack.setOnClickListener(v -> finish());
 
-        CardView btnDelete = findViewById(R.id.btn_delete_user_view);
         btnDelete.setOnClickListener(v -> {
             Intent intent = new Intent(AdminViewUserActivity.this, ConfirmActivity.class);
             intent.putExtra("ACTION_TYPE", "DELETE");
@@ -90,7 +106,6 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         CardView btnSave = findViewById(R.id.btn_save_update_user);
         btnSave.setOnClickListener(this);
 
-        CardView btnUpdate = findViewById(R.id.btn_update_user_view);
         btnUpdate.setOnClickListener(v -> {
             enableFields(true);
 
@@ -106,9 +121,6 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                 finish(); // Menghentikan AdminCreateUserActivity
             }
         });
-
-        int id = getIntent().getIntExtra("USER_ID", 1);
-        getUsers(id);
     }
 
     public void getUsers(int id) {

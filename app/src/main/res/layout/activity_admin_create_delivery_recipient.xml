@@ -74,7 +74,7 @@
                     android:id="@+id/textInputFullnameCreateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter fullname"  />
+                    android:hint="Fullname"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +90,7 @@
                     android:id="@+id/textInputWhatsappCreateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter whatsapp"  />
+                    android:hint="whatsapp"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start"
-                    android:hint="Enter address"  />
+                    android:hint="Address"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

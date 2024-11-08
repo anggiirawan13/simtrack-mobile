@@ -24,6 +24,9 @@ public class LogoutActivity extends AppCompatActivity {
 
         btnYes = findViewById(R.id.btn_yes_logout);
         btnYes.setOnClickListener(v -> {
+            PreferenceManager preferenceManager = new PreferenceManager(this);
+            preferenceManager.clearData(); // Hapus data saat logout
+
             Intent intent = new Intent(LogoutActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

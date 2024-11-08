@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/btn_back_view_user"
-        android:contentDescription="Icon Logout"
+        android:contentDescription="Icon Back"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
@@ -78,7 +78,7 @@
                     android:id="@+id/textInputFullnameView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter fullname"
+                    android:hint="Fullname"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +95,7 @@
                     android:id="@+id/textInputUsernameView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter username"
+                    android:hint="Username"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,7 +112,7 @@
                     android:id="@+id/textInputPasswordView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter password"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="Select role"
+                    android:hint="Role"
                     android:paddingLeft="16dp"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start"
-                    android:hint="Enter address"
+                    android:hint="Address"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 

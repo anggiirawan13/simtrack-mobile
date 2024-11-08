@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_anchorGravity="center"
-    tools:context=".AdminActivity">
+    app:layout_anchorGravity="center">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,12 +41,11 @@
                     app:cardCornerRadius="20dp">
 
                     <TextView
-                        android:id="@+id/textView21"
+                        android:id="@+id/totalDiproses"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center|center_horizontal|center_vertical"
                         android:gravity="center|center_horizontal|center_vertical"
-                        android:text="96"
                         android:textColor="#fff"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -89,11 +87,10 @@
                     app:cardCornerRadius="20dp">
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/totalDikirim"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="97"
                         android:textColor="#fff"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -133,11 +130,10 @@
                     app:cardCornerRadius="20dp">
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/totalDiterima"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="98"
                         android:textColor="#fff"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -179,11 +175,10 @@
                     app:cardCornerRadius="20dp">
 
                     <TextView
-                        android:id="@+id/textView27"
+                        android:id="@+id/totalKeseluruhan"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="99"
                         android:textColor="#fff"
                         android:textSize="24sp"
                         android:textStyle="bold" />

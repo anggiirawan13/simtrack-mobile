@@ -105,7 +105,7 @@
                     android:id="@+id/textInputCompanyNameCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter company name" />
+                    android:hint="company name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="Select status"
+                    android:hint="status"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="Select shipper"
+                    android:hint="shipper"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Select delivery date"
+                    android:hint="delivery date"
                     android:inputType="date"
                     android:focusable="false"
                     tools:layout_editor_absoluteX="58dp"
@@ -188,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Select receiving date"
+                    android:hint="receiving date"
                     android:inputType="date"
                     android:focusable="false"
                     tools:layout_editor_absoluteX="58dp"
