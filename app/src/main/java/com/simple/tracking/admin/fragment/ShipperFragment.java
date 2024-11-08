@@ -2,6 +2,9 @@ package com.simple.tracking.admin.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +41,8 @@ public class ShipperFragment extends Fragment {
     private CardView btnAddShipper;
     private MaterialButton btnSearchShipper;
     private TextInputEditText textInputSearchShipper;
+    private final Handler searchHandler = new Handler();
+    private Runnable searchRunnable;
     private int currentPage = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
@@ -70,6 +75,37 @@ public class ShipperFragment extends Fragment {
             }
 
             getShippers(Objects.requireNonNull(textInputSearchShipper.getText()).toString());
+        });
+
+        textInputSearchShipper.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchRunnable != null) {
+                    searchHandler.removeCallbacks(searchRunnable);
+                }
+
+                searchRunnable = () -> {
+                    if (s.toString().isEmpty()) {
+                        currentPage = 1;
+                        isLastPage = false;
+                        isLoading = false;
+
+                        if (shipperAdapter != null) {
+                            shipperAdapter.clearShippers();
+                        }
+
+                        getShippers(null); // Fetch without a query to get all users
+                    }
+                };
+
+                searchHandler.postDelayed(searchRunnable, 1000); // 1-second delay
+            }
         });
 
         // Fetch shippers from the API
