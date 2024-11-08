@@ -73,8 +73,9 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
 
         PreferenceManager preferenceManager = new PreferenceManager(this);
         int userIdLogin = preferenceManager.getUserId();
+        String role = preferenceManager.getUserRole();
 
-        if (userIdLogin == id) {
+        if (userIdLogin == id || role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("administrator")) {
             btnDelete.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.GONE);
         }

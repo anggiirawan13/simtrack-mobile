@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                            }
 //
                             PreferenceManager preferenceManager = new PreferenceManager(this);
-                            preferenceManager.saveUser(5, "admin");
+                            preferenceManager.saveUser(74, "admin");
                             startActivity(intent);
 //                        } else {
 //                            Toast.makeText(MainActivity.this, "Username atau Password Salah!", Toast.LENGTH_SHORT).show();

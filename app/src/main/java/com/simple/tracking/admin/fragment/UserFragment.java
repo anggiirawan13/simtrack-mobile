@@ -135,6 +135,21 @@ public class UserFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        currentPage = 1;
+        isLastPage = false;
+        isLoading = false;
+
+        if (userAdapter != null) {
+            userAdapter.clearUsers();
+        }
+
+        getUsers(null);
+    }
+
     private void getUsers(String query) {
         if (isLoading || isLastPage) return; // Prevent duplicate requests
 
