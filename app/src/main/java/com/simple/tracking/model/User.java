@@ -10,6 +10,8 @@ public class User implements Serializable {
     private String fullname;
     private String username;
     private String role;
+    @SerializedName("device_mapping")
+    private String deviceMapping;
 
     private Address address;
 
@@ -51,6 +53,14 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getDeviceMapping() {
+        return deviceMapping;
+    }
+
+    public void setDeviceMapping(String deviceMapping) {
+        this.deviceMapping = deviceMapping;
     }
 
     public Address getAddress() {

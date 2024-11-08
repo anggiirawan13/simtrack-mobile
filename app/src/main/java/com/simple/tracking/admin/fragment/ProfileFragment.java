@@ -35,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText textInputFullnameProfileUser;
     private TextInputEditText textInputUsernameProfileUser;
     private TextInputEditText textInputPasswordProfileUser;
+    private TextInputEditText textInputDeviceMappingProfileUser;
     private MaterialAutoCompleteTextView textInputRoleProfileUser;
     private TextInputEditText textInputAddressProfileUser;
     private TextInputEditText textInputSubDistrictProfileUser;
@@ -53,6 +54,7 @@ public class ProfileFragment extends Fragment {
         textInputFullnameProfileUser = view.findViewById(R.id.textInputFullnameProfileUser);
         textInputUsernameProfileUser = view.findViewById(R.id.textInputUsernameProfileUser);
         textInputPasswordProfileUser = view.findViewById(R.id.textInputPasswordProfileUser);
+        textInputDeviceMappingProfileUser = view.findViewById(R.id.textInputDeviceMappingProfileUser);
         textInputRoleProfileUser = view.findViewById(R.id.textInputRoleProfileUser);
         textInputAddressProfileUser = view.findViewById(R.id.textInputAddressProfileUser);
         textInputSubDistrictProfileUser = view.findViewById(R.id.textInputSubDistrictProfileUser);
@@ -130,6 +132,7 @@ public class ProfileFragment extends Fragment {
                         textInputFullnameProfileUser.setText(user.getFullname()); // Assuming getter is getFullname()
                         textInputUsernameProfileUser.setText(user.getUsername()); // Assuming getter is getUsername()
                         textInputPasswordProfileUser.setText(user.getPassword()); // Assuming getter is getPassword(), consider security implications
+                        textInputDeviceMappingProfileUser.setText(user.getDeviceMapping());
                         textInputRoleProfileUser.setText(user.getRole()); // Assuming getter is getRole()
                         textInputAddressProfileUser.setText(user.getAddress().getStreet()); // Assuming getter is getAddress()
                         textInputSubDistrictProfileUser.setText(user.getAddress().getSubDistrict()); // Assuming getter is getSubDistrict()
