@@ -66,43 +66,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_login) {
-//            Auth auth = new Auth();
-//            auth.setUsername(username.getText().toString());
-//            auth.setPassword(password.getText().toString());
-//
-//            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth); // Updated to match the new return type
-//            call.enqueue(new Callback<BaseResponse<Auth>>() {
-//                @Override
-//                public void onResponse(Call<BaseResponse<Auth>> call, Response<BaseResponse<Auth>> response) {
-//                    if (response.isSuccessful()) {
-//                        BaseResponse<Auth> baseResponse = response.body();
-//                        if (baseResponse != null && baseResponse.isSuccess()) {
-//                            String userRole = baseResponse.getData().getRole();
+            Auth auth = new Auth();
+            auth.setUsername(username.getText().toString());
+            auth.setPassword(password.getText().toString());
+
+            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth); // Updated to match the new return type
+            call.enqueue(new Callback<BaseResponse<Auth>>() {
+                @Override
+                public void onResponse(Call<BaseResponse<Auth>> call, Response<BaseResponse<Auth>> response) {
+                    if (response.isSuccessful()) {
+                        BaseResponse<Auth> baseResponse = response.body();
+                        if (baseResponse != null && baseResponse.isSuccess()) {
+                            int userId = baseResponse.getData().getId();
+                            String userRole = baseResponse.getData().getRole();
                             Intent intent;
-//                            if (userRole.equalsIgnoreCase("SHIPPER")) {
-//                                intent = new Intent(MainActivity.this, ShipperActivity.class);
-//                            } else {
+                            if (userRole.equalsIgnoreCase("SHIPPER")) {
+                                intent = new Intent(MainActivity.this, ShipperActivity.class);
+                            } else {
                                 intent = new Intent(MainActivity.this, AdminActivity.class);
-//                            }
-//
-                            PreferenceManager preferenceManager = new PreferenceManager(this);
-                            preferenceManager.saveUser(74, "admin");
+                            }
+
+                            PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
+                            preferenceManager.saveUser(userId, "admin");
                             startActivity(intent);
-//                        } else {
-//                            Toast.makeText(MainActivity.this, "Username atau Password Salah!", Toast.LENGTH_SHORT).show();
-//                            Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
-//                        }
-//                    } else {
-//                        Toast.makeText(MainActivity.this, "Terjadi kesalahan pada sistem.", Toast.LENGTH_SHORT).show();
-//                        Log.e("API Error", "Response not successful: " + response.code());
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<BaseResponse<Auth>> call, Throwable t) {
-//                    Log.e("API Error", "Terjadi kesalahan pada sistem.");
-//                }
-//            });
+                        } else {
+                            Toast.makeText(MainActivity.this, "Username atau Password Salah!", Toast.LENGTH_SHORT).show();
+                            Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Terjadi kesalahan pada sistem.", Toast.LENGTH_SHORT).show();
+                        Log.e("API Error", "Response not successful: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse<Auth>> call, Throwable t) {
+                    Log.e("API Error", "Terjadi kesalahan pada sistem.");
+                }
+            });
         }
     }
 
