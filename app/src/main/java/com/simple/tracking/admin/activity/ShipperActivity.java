@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.LogoutActivity;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.adapter.FragmentPagerAdapter;
@@ -27,12 +28,14 @@ public class ShipperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
+
         OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Check if we are on the Home fragment
-                // Navigate to logout
                 Intent intent = new Intent(ShipperActivity.this, LogoutActivity.class);
                 startActivity(intent);
             }
@@ -87,5 +90,14 @@ public class ShipperActivity extends AppCompatActivity {
         viewPager.setCurrentItem(selectedTab, false);
         viewPager.setUserInputEnabled(false);
         textView.setText(tabTitles[selectedTab]);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
     }
 }

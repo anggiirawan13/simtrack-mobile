@@ -1,34 +1,84 @@
 package com.simple.tracking.admin.activity.delivery;
 
-import android.content.Intent;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import androidx.cardview.widget.CardView;
-import com.simple.tracking.ConfirmActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 
-public class AdminViewDeliveryRecipientActivity extends AppCompatActivity {
+public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private CardView btnSaveUpdateDeliveryRecipientUpdate, btnDeleteDeliveryRecipientUpdate, btnUpdateDeliveryRecipientUpdate;
+    private TextInputEditText textInputFullnameUpdate, textInputWhatsappUpdate,
+            textInputAddressUpdate, textInputSubDistrictUpdate, textInputDistrictUpdate,
+            textInputCityUpdate, textInputProvinceUpdate, textInputPostalCodeUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_view_delivery_recipient);
 
-        ImageView btnBack = findViewById(R.id.btn_back_delivery_recipient_view);
-        btnBack.setOnClickListener(v -> finish());
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
 
-        CardView btnDelete = findViewById(R.id.btn_delete_delivery_recipient_view);
-        btnDelete.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminViewDeliveryRecipientActivity.this, ConfirmActivity.class);
-            intent.putExtra("ACTION_TYPE", "DELETE");
-            intent.putExtra("MENU_NAME", "DELIVERY");
-            startActivity(intent);
-        });
+        textInputFullnameUpdate = findViewById(R.id.textInputFullnameUpdateDeliveryRecipient);
+        textInputWhatsappUpdate = findViewById(R.id.textInputWhatsappUpdateDeliveryRecipient);
+        textInputAddressUpdate = findViewById(R.id.textInputAddressUpdateDeliveryRecipient);
+        textInputSubDistrictUpdate = findViewById(R.id.textInputSubDistrictUpdateDeliveryRecipient);
+        textInputDistrictUpdate = findViewById(R.id.textInputDistrictUpdateDeliveryRecipient);
+        textInputCityUpdate = findViewById(R.id.textInputCityUpdateDeliveryRecipient);
+        textInputProvinceUpdate = findViewById(R.id.textInputProvinceUpdateDeliveryRecipient);
+        textInputPostalCodeUpdate = findViewById(R.id.textInputPostalCodeUpdateDeliveryRecipient);
+        btnSaveUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_save_update_delivery_recipient);
+        btnUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_update_delivery_recipient_update);
+        btnDeleteDeliveryRecipientUpdate = findViewById(R.id.btn_delete_delivery_recipient_update);
 
-        CardView btnUpdate = findViewById(R.id.btn_update_delivery_recipient_view);
-        btnUpdate.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminViewDeliveryRecipientActivity.this, AdminUpdateDeliveryDetailActivity.class);
-            startActivity(intent);
-        });
+        ImageView btnBackUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_back_delivery_recipient_update);
+        btnBackUpdateDeliveryRecipientUpdate.setOnClickListener(this);
+
+        btnUpdateDeliveryRecipientUpdate.setOnClickListener(this);
+
+        btnSaveUpdateDeliveryRecipientUpdate.setOnClickListener(this);
+
+        btnDeleteDeliveryRecipientUpdate.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_back_delivery_recipient_update) finish();
+        else if (view.getId() == R.id.btn_save_update_delivery_recipient)
+            new AlertDialog.Builder(AdminViewDeliveryRecipientActivity.this)
+                    .setTitle("KONFIRMASI")
+                    .setMessage("Apakah anda yakin ingin mengubah data ini?")
+                    .setPositiveButton("YES", (dialog, which) -> {})
+                    .setNegativeButton("NO", null)
+                    .show();
+        else if (view.getId() == R.id.btn_delete_delivery_recipient_update)
+            new AlertDialog.Builder(AdminViewDeliveryRecipientActivity.this)
+                    .setTitle("KONFIRMASI")
+                    .setMessage("Apakah anda yakin ingin menghapus data ini?")
+                    .setPositiveButton("YES", (dialog, which) -> {})
+                    .setNegativeButton("NO", null)
+                    .show();
+        else if (view.getId() == R.id.btn_update_delivery_recipient_update) {
+            btnSaveUpdateDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
+            btnUpdateDeliveryRecipientUpdate.setVisibility(View.GONE);
+            btnDeleteDeliveryRecipientUpdate.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
     }
 }

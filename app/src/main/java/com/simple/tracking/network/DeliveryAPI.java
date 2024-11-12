@@ -41,4 +41,7 @@ public interface DeliveryAPI {
 
     @DELETE("/api/deliveries/{id}")
     Call<BaseResponse<Void>> deleteDelivery(@Path("id") int deliveryId);
+
+    @GET("/api/deliveries/generate")
+    Call<BaseResponse<String>> getDeliveryNumber();
 }

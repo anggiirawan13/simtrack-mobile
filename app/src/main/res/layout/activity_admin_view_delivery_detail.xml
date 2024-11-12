@@ -14,7 +14,7 @@
         android:layout_gravity="center|center_vertical"
         android:layout_marginStart="20dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/divider_admin_view_delivery_detail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
@@ -30,7 +30,7 @@
         android:textColor="#27AE60"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/divider_admin_view_delivery_detail"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,13 +43,13 @@
         android:layout_gravity="center|center_vertical"
         android:layout_marginEnd="20dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/divider3"
+        app:layout_constraintBottom_toTopOf="@id/divider_admin_view_delivery_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_next" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/divider_admin_view_delivery_detail"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="80dp"
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider3">
+        app:layout_constraintTop_toBottomOf="@id/divider_admin_view_delivery_detail">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -80,15 +80,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/deliery_number_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Get delivery number" />
+                    android:enabled="false"
+                    android:hint="Delivery Number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -101,9 +102,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/company_name_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="company name" />
+                    android:enabled="false"
+                    android:hint="Company Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -118,11 +121,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/roleSpinner"
+                    android:id="@+id/status_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="status"
+                    android:enabled="false"
+                    android:hint="Status"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,11 +142,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/roleSpinner2"
+                    android:id="@+id/shipper_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="shipper"
+                    android:enabled="false"
+                    android:hint="Shipper"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,11 +163,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout12">
 
                 <EditText
-                    android:id="@+id/editTextDate2"
+                    android:id="@+id/delivery_date_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="delivery date"
+                    android:enabled="false"
+                    android:hint="Delivery Date"
                     android:inputType="date"
                     android:focusable="false"
                     tools:layout_editor_absoluteX="58dp"
@@ -182,11 +188,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout9">
 
                 <EditText
-                    android:id="@+id/editTextDate3"
+                    android:id="@+id/receiving_date_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="receiving date"
+                    android:enabled="false"
+                    android:hint="Receiving Date"
                     android:inputType="date"
                     android:focusable="false"
                     tools:layout_editor_absoluteX="58dp"
@@ -203,32 +210,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout10">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirmation_code_admin_view_delivery_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Auto generate confirmation code" />
+                    android:enabled="false"
+                    android:hint="Auto Generate Confirmation Code" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="29dp"
-                android:outlineAmbientShadowColor="#CB6040"
-                app:cardBackgroundColor="#CB6040"
-                app:cardCornerRadius="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="GENERATE"
-                    android:textColor="#fff"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

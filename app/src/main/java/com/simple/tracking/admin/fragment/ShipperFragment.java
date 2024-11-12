@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.shipper.AdminCreateShipperActivity;
 import com.simple.tracking.admin.adapter.ShipperAdapter;
@@ -52,6 +53,10 @@ public class ShipperFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_shipper, container, false);
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
 
         recyclerView = view.findViewById(R.id.recyclerViewShipper);
         btnAddShipper = view.findViewById(R.id.btn_add_shipper);
@@ -135,8 +140,14 @@ public class ShipperFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
+
         currentPage = 1;
         isLastPage = false;
+
         getShippers(null); // Fetch first page of shippers
     }
 

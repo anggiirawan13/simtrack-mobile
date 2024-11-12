@@ -17,8 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.user.AdminCreateUserActivity;
 import com.simple.tracking.admin.adapter.UserAdapter;
@@ -51,6 +54,10 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_user, container, false);
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
 
         recyclerView = view.findViewById(R.id.recyclerViewUser);
         btnAddUser = view.findViewById(R.id.btn_add_user);
@@ -138,6 +145,10 @@ public class UserFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
 
         currentPage = 1;
         isLastPage = false;

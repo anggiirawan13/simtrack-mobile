@@ -2,29 +2,23 @@ package com.simple.tracking;
 
 import android.content.Intent;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.admin.activity.AdminActivity;
-import com.simple.tracking.MainActivity;
 import com.simple.tracking.admin.activity.ShipperActivity;
-import com.simple.tracking.admin.fragment.DeliveryFragment;
-import com.simple.tracking.admin.fragment.ShipperFragment;
-import com.simple.tracking.admin.fragment.UserFragment;
 import com.simple.tracking.model.Auth;
-import com.simple.tracking.model.User;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.LoginAPIConfiguration;
-import com.simple.tracking.network.UserAPIConfiguration;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,24 +28,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextInputEditText username;
     private TextInputEditText password;
-    private CardView btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LocationChecker.checkLocationSettings(this, 1000);
+
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
+
         PreferenceManager preferenceManager = new PreferenceManager(this);
 
-        // Cek apakah sudah login
         if (preferenceManager.isLoggedIn()) {
             String userRole = preferenceManager.getUserRole();
             Intent intent;
+
             if ("SHIPPER".equalsIgnoreCase(userRole)) {
                 intent = new Intent(MainActivity.this, ShipperActivity.class);
             } else {
                 intent = new Intent(MainActivity.this, AdminActivity.class);
             }
+
             startActivity(intent);
             finish();
         }
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         username = findViewById(R.id.textInputUsernameLogin);
         password = findViewById(R.id.textInputPasswordLogin);
 
-        btnLogin = findViewById(R.id.btn_login);
+        CardView btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
     }
 
@@ -67,73 +67,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.btn_login) {
             Auth auth = new Auth();
-            auth.setUsername(username.getText().toString());
-            auth.setPassword(password.getText().toString());
+            auth.setUsername(Objects.requireNonNull(username.getText()).toString());
+            auth.setPassword(Objects.requireNonNull(password.getText()).toString());
 
-            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth); // Updated to match the new return type
+            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth);
             call.enqueue(new Callback<BaseResponse<Auth>>() {
                 @Override
-                public void onResponse(Call<BaseResponse<Auth>> call, Response<BaseResponse<Auth>> response) {
-                    if (response.isSuccessful()) {
-                        BaseResponse<Auth> baseResponse = response.body();
-                        if (baseResponse != null && baseResponse.isSuccess()) {
-                            int userId = baseResponse.getData().getId();
-                            String userRole = baseResponse.getData().getRole();
-                            Intent intent;
-                            if (userRole.equalsIgnoreCase("SHIPPER")) {
-                                intent = new Intent(MainActivity.this, ShipperActivity.class);
-                            } else {
-                                intent = new Intent(MainActivity.this, AdminActivity.class);
-                            }
-
-                            PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
-                            preferenceManager.saveUser(userId, "admin");
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "Username atau Password Salah!", Toast.LENGTH_SHORT).show();
-                            Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
-                        }
+                public void onResponse(@NonNull Call<BaseResponse<Auth>> call, @NonNull Response<BaseResponse<Auth>> response) {
+                    BaseResponse<Auth> baseResponse = response.body();
+                    assert baseResponse != null;
+                    if (!baseResponse.isSuccess()) {
+                        new AlertDialog.Builder(MainActivity.this).
+                                setTitle("GAGAL")
+                                .setMessage(baseResponse.getMessage())
+                                .setPositiveButton("OK", null)
+                                .show();
                     } else {
-                        Toast.makeText(MainActivity.this, "Terjadi kesalahan pada sistem.", Toast.LENGTH_SHORT).show();
-                        Log.e("API Error", "Response not successful: " + response.code());
+                        int userId = baseResponse.getData().getId();
+                        String userRole = baseResponse.getData().getRole();
+                        Intent intent;
+                        if (userRole.equalsIgnoreCase("ADMIN")) {
+                            intent = new Intent(MainActivity.this, AdminActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this, ShipperActivity.class);
+                        }
+
+                        PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
+                        preferenceManager.saveUser(userId, "admin");
+
+                        startActivity(intent);
                     }
                 }
 
                 @Override
-                public void onFailure(Call<BaseResponse<Auth>> call, Throwable t) {
+                public void onFailure(@NonNull Call<BaseResponse<Auth>> call, @NonNull Throwable t) {
                     Log.e("API Error", "Terjadi kesalahan pada sistem.");
                 }
             });
         }
     }
 
-    private final ActivityResultLauncher<Intent> successActivityLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    String menuName = result.getData().getStringExtra("MENU_NAME");
-                    if (menuName != null) {
-                        switch (menuName) {
-                            case "USER":
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container, new UserFragment())
-                                        .commit();
-                                break;
-                            case "DELIVERY":
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container, new DeliveryFragment())
-                                        .commit();
-                                break;
-                            case "SHIPPER":
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container, new ShipperFragment())
-                                        .commit();
-                                break;
-                        }
-                    }
-                }
-            });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == 1000) {
+            if (resultCode == RESULT_OK) {
+                // Lokasi telah diaktifkan, Anda bisa lanjutkan operasi
+            } else {
+                // Lokasi masih dimatikan, Anda bisa menampilkan pesan atau mengambil tindakan lain
+            }
+        }
+    }
 }

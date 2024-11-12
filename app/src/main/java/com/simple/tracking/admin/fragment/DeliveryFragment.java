@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryDetailActivity;
 import com.simple.tracking.admin.adapter.DeliveryAdapter;
@@ -39,6 +40,10 @@ public class DeliveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_delivery, container, false);
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
 
         recyclerView = view.findViewById(R.id.recyclerViewDelivery);
         btnAddDelivery = view.findViewById(R.id.btn_add_delivery);
@@ -76,8 +81,14 @@ public class DeliveryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
+
         currentPage = 1;
         isLastPage = false;
+
         getDeliveries(null); // Fetch first page of deliveries
     }
 

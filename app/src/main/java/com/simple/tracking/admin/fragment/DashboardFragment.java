@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Dashboard;
 import com.simple.tracking.network.BaseResponse;
@@ -32,6 +33,10 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_dashboard, container, false);
 
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
+
         totalDiproses = view.findViewById(R.id.totalDiproses);
         totalDikirim = view.findViewById(R.id.totalDikirim);
         totalDiterima = view.findViewById(R.id.totalDiterima);
@@ -40,6 +45,15 @@ public class DashboardFragment extends Fragment {
         getDashboard();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(requireActivity())) {
+            LocationChecker.showLocationDisabledDialog(requireActivity());
+        }
     }
 
     public void getDashboard() {

@@ -1,59 +1,47 @@
 package com.simple.tracking.admin.activity.user;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.simple.tracking.ConfirmActivity;
-import com.simple.tracking.PreferenceManager;
+import com.simple.tracking.AdminChecker;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
-import com.simple.tracking.admin.adapter.UserAdapter;
 import com.simple.tracking.model.Address;
 import com.simple.tracking.model.User;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.UserAPIConfiguration;
 
-import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminViewUserActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextInputEditText textInputFullnameView;
-    private TextInputEditText textInputUsernameView;
-    private TextInputEditText textInputPasswordView;
+    private TextInputEditText textInputFullnameView, textInputUsernameView, textInputPasswordView,
+            textInputAddressView, textInputSubDistrictView, textInputDistrictView,
+            textInputCityView, textInputProvinceView, textInputPostalCodeView;
     private MaterialAutoCompleteTextView textInputRoleView;
-    private TextInputEditText textInputAddressView;
-    private TextInputEditText textInputSubDistrictView;
-    private TextInputEditText textInputDistrictView;
-    private TextInputEditText textInputCityView;
-    private TextInputEditText textInputProvinceView;
-    private TextInputEditText textInputPostalCodeView;
-    private CardView btnDelete;
-    private CardView btnUpdate;
-
-    private ActivityResultLauncher<Intent> successActivityLauncher;
+    private CardView btnDelete, btnUpdate, btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_view_user); // Use your actual layout name
+        setContentView(R.layout.activity_admin_view_user);
 
-        // Initialize views
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
+
         textInputFullnameView = findViewById(R.id.textInputFullnameView);
         textInputUsernameView = findViewById(R.id.textInputUsernameView);
         textInputPasswordView = findViewById(R.id.textInputPasswordView);
@@ -66,189 +54,223 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         textInputPostalCodeView = findViewById(R.id.textInputPostalCodeView);
         btnDelete = findViewById(R.id.btn_delete_user_view);
         btnUpdate = findViewById(R.id.btn_update_user_view);
+        btnSave = findViewById(R.id.btn_save_update_user);
 
-
-        int id = getIntent().getIntExtra("USER_ID", 1);
+        int id = getIntent().getIntExtra("USER_ID", -1);
         getUsers(id);
 
-        PreferenceManager preferenceManager = new PreferenceManager(this);
-        int userIdLogin = preferenceManager.getUserId();
-        String role = preferenceManager.getUserRole();
-
-        if (userIdLogin == id || role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("administrator")) {
+        if (!AdminChecker.isAdmin(this, id)) {
             btnDelete.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.GONE);
         }
 
-        String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, roles);
-        textInputRoleView.setAdapter(adapter);
-
-        textInputRoleView.setOnFocusChangeListener((view, hasFocus) -> {
-            if (hasFocus) {
-                textInputRoleView.showDropDown();
-            }
-        });
-
-        textInputRoleView.setOnClickListener(view -> textInputRoleView.showDropDown());
-
         ImageView btnBack = findViewById(R.id.btn_back_view_user);
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(this);
 
-        btnDelete.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminViewUserActivity.this, ConfirmActivity.class);
-            intent.putExtra("ACTION_TYPE", "DELETE");
-            intent.putExtra("MENU_NAME", "USER");
-            intent.putExtra("USER_ID", getIntent().getIntExtra("USER_ID", 1));
-            successActivityLauncher.launch(intent);
-        });
+        btnDelete.setOnClickListener(this);
 
-        CardView btnSave = findViewById(R.id.btn_save_update_user);
+        btnSave = findViewById(R.id.btn_save_update_user);
         btnSave.setOnClickListener(this);
 
-        btnUpdate.setOnClickListener(v -> {
-            enableFields(true);
-
-            btnDelete.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
-            btnSave.setVisibility(View.VISIBLE);
-        });
-
-        successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                // Arahkan kembali ke UserFragment
-                setResult(RESULT_OK);
-                finish(); // Menghentikan AdminCreateUserActivity
-            }
-        });
+        btnUpdate.setOnClickListener(this);
     }
 
     public void getUsers(int id) {
-        Call<BaseResponse<User>> call = UserAPIConfiguration.getInstance().getUser(id); // Updated to match the new return type
+        Call<BaseResponse<User>> call = UserAPIConfiguration.getInstance().getUser(id);
         call.enqueue(new Callback<BaseResponse<User>>() {
             @Override
-            public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<BaseResponse<User>> call, @NonNull Response<BaseResponse<User>> response) {
+                if (!response.isSuccessful())
+                    new AlertDialog.Builder(AdminViewUserActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .show();
+                else {
                     BaseResponse<User> baseResponse = response.body();
-                    if (baseResponse != null && baseResponse.isSuccess()) {
+                    if (baseResponse == null || !baseResponse.isSuccess())
+                        new AlertDialog.Builder(AdminViewUserActivity.this)
+                                .setTitle("ERROR")
+                                .setMessage("Terjadi kesalahan pada sistem kami.")
+                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .show();
+                    else {
                         User user = baseResponse.getData();
-                        textInputFullnameView.setText(user.getFullname()); // Assuming getter is getFullname()
-                        textInputUsernameView.setText(user.getUsername()); // Assuming getter is getUsername()
-                        textInputPasswordView.setText(user.getPassword()); // Assuming getter is getPassword(), consider security implications
-                        textInputRoleView.setText(user.getRole()); // Assuming getter is getRole()
-                        textInputAddressView.setText(user.getAddress().getStreet()); // Assuming getter is getAddress()
-                        textInputSubDistrictView.setText(user.getAddress().getSubDistrict()); // Assuming getter is getSubDistrict()
-                        textInputDistrictView.setText(user.getAddress().getDistrict()); // Assuming getter is getDistrict()
-                        textInputCityView.setText(user.getAddress().getCity()); // Assuming getter is getCity()
-                        textInputProvinceView.setText(user.getAddress().getProvince()); // Assuming getter is getProvince()
-                        textInputPostalCodeView.setText(user.getAddress().getPostalCode()); // Assuming getter is getPostalCode()
-                    } else {
-                        Toast.makeText(AdminViewUserActivity.this, "GAGAL", Toast.LENGTH_SHORT).show();
-                        Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
+                        textInputFullnameView.setText(user.getFullname());
+                        textInputUsernameView.setText(user.getUsername());
+                        textInputPasswordView.setText(user.getPassword());
+                        textInputRoleView.setText(user.getRole());
+                        textInputAddressView.setText(user.getAddress().getStreet());
+                        textInputSubDistrictView.setText(user.getAddress().getSubDistrict());
+                        textInputDistrictView.setText(user.getAddress().getDistrict());
+                        textInputCityView.setText(user.getAddress().getCity());
+                        textInputProvinceView.setText(user.getAddress().getProvince());
+                        textInputPostalCodeView.setText(user.getAddress().getPostalCode());
                     }
-                } else {
-                    Toast.makeText(AdminViewUserActivity.this, "Response not successful", Toast.LENGTH_SHORT).show();
-                    Log.e("API Error", "Response not successful: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
-                Log.e("API Error", "Failed to fetch users: " + t.getMessage());
+            public void onFailure(@NonNull Call<BaseResponse<User>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminViewUserActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .show();
             }
         });
     }
 
-    private void enableFields(boolean enable) {
-        textInputFullnameView.setEnabled(enable);
-        textInputUsernameView.setEnabled(enable);
-        textInputPasswordView.setEnabled(enable);
-        textInputRoleView.setEnabled(enable);
-        textInputAddressView.setEnabled(enable);
-        textInputSubDistrictView.setEnabled(enable);
-        textInputDistrictView.setEnabled(enable);
-        textInputCityView.setEnabled(enable);
-        textInputProvinceView.setEnabled(enable);
-        textInputPostalCodeView.setEnabled(enable);
+    private void enableFields() {
+        textInputFullnameView.setEnabled(true);
+        textInputUsernameView.setEnabled(true);
+        textInputPasswordView.setEnabled(true);
+        textInputRoleView.setEnabled(true);
+        textInputAddressView.setEnabled(true);
+        textInputSubDistrictView.setEnabled(true);
+        textInputDistrictView.setEnabled(true);
+        textInputCityView.setEnabled(true);
+        textInputProvinceView.setEnabled(true);
+        textInputPostalCodeView.setEnabled(true);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_save_update_user) {
-            Address address = new Address();
-            address.setStreet(textInputAddressView.getText().toString());
-            address.setSubDistrict(textInputSubDistrictView.getText().toString());
-            address.setDistrict(textInputDistrictView.getText().toString());
-            address.setCity(textInputCityView.getText().toString());
-            address.setProvince(textInputProvinceView.getText().toString());
-            address.setPostalCode(textInputPostalCodeView.getText().toString());
+        int userId = getIntent().getIntExtra("USER_ID", -1);
 
-            User user = new User();
-            user.setId(getIntent().getIntExtra("USER_ID", 1));
-            user.setPassword(textInputPasswordView.getText().toString());
-            user.setFullname(textInputFullnameView.getText().toString());
-            user.setUsername(textInputUsernameView.getText().toString());
-            user.setRole(textInputRoleView.getText().toString());
-            user.setAddress(address);
+        if (view.getId() == R.id.btn_back_view_user) finish();
+        else if (view.getId() == R.id.textInputRoleView) textInputRoleView.showDropDown();
+        else if (view.getId() == R.id.btn_delete_user_view)
+            new AlertDialog.Builder(AdminViewUserActivity.this)
+                    .setTitle("KONFIRMASI")
+                    .setMessage("Apakah anda yakin ingin menghapus data ini?")
+                    .setPositiveButton("YES", (dialog, which) -> deleteUser(userId))
+                    .setNegativeButton("NO", null).show();
+        else if (view.getId() == R.id.btn_update_user_view) {
+            populateUserDropdown();
 
-            Intent intent = new Intent(AdminViewUserActivity.this, ConfirmActivity.class);
-            intent.putExtra("ACTION_TYPE", "UPDATE");
-            intent.putExtra("MENU_NAME", "USER");
-            intent.putExtra("USER_DATA", user);  // Mengirimkan objek User
-            successActivityLauncher.launch(intent);
+            enableFields();
+
+            btnDelete.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
+            btnSave.setVisibility(View.VISIBLE);
+        }
+        else if (view.getId() == R.id.btn_save_update_user) {
+            Address address = new Address.Builder()
+                    .setStreet(Objects.requireNonNull(textInputAddressView.getText()).toString())
+                    .setSubDistrict(Objects.requireNonNull(textInputSubDistrictView.getText()).toString())
+                    .setDistrict(Objects.requireNonNull(textInputDistrictView.getText()).toString())
+                    .setCity(Objects.requireNonNull(textInputCityView.getText()).toString())
+                    .setProvince(Objects.requireNonNull(textInputProvinceView.getText()).toString())
+                    .setPostalCode(Objects.requireNonNull(textInputPostalCodeView.getText()).toString())
+                    .build();
+
+            User user = new User.Builder()
+                    .setId(userId)
+                    .setPassword(Objects.requireNonNull(textInputPasswordView.getText()).toString())
+                    .setFullname(Objects.requireNonNull(textInputFullnameView.getText()).toString())
+                    .setUsername(Objects.requireNonNull(textInputUsernameView.getText()).toString())
+                    .setRole(textInputRoleView.getText().toString())
+                    .setAddress(address)
+                    .build();
+
+            new AlertDialog.Builder(AdminViewUserActivity.this)
+                    .setTitle("KONFIRMASI")
+                    .setMessage("Apakah anda yakin ingin mengubah data ini?")
+                    .setPositiveButton("YES", (dialog, which) -> updateUser(user))
+                    .setNegativeButton("NO", null)
+                    .show();
         }
     }
 
-    public void updateUser(int id, User user) {
-        Call<BaseResponse<User>> call = UserAPIConfiguration.getInstance().updateUser(id, user); // Updated to match the new return type
+    public void updateUser(User user) {
+        Call<BaseResponse<User>> call = UserAPIConfiguration.getInstance().updateUser(user.getId(), user);
         call.enqueue(new Callback<BaseResponse<User>>() {
             @Override
-            public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<User>> call, @NonNull Response<BaseResponse<User>> response) {
                 if (response.isSuccessful()) {
                     BaseResponse<User> baseResponse = response.body();
-                    if (baseResponse != null && baseResponse.isSuccess()) {
-                        finish();
-                    } else {
-                        Toast.makeText(AdminViewUserActivity.this, "User Gagal Diubah", Toast.LENGTH_SHORT).show();
-                        Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
+                    if (baseResponse != null && baseResponse.isSuccess()) finish();
+                    else {
+                        new AlertDialog.Builder(AdminViewUserActivity.this)
+                                .setTitle("ERROR")
+                                .setMessage("Terjadi kesalahan pada sistem kami.")
+                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .show();
                     }
                 } else {
-                    Toast.makeText(AdminViewUserActivity.this, "User Gagal Diubah", Toast.LENGTH_SHORT).show();
-                    Log.e("API Error", "Response not successfulGAGAL: " + response.code());
+                    new AlertDialog.Builder(AdminViewUserActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .show();
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
-                Log.e("API Error", "User Gagal Diubah");
+            public void onFailure(@NonNull Call<BaseResponse<User>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminViewUserActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .show();
             }
         });
     }
 
     public void deleteUser(int id) {
-        Call<BaseResponse<Void>> call = UserAPIConfiguration.getInstance().deleteUser(id); // Updated to match the new return type
+        Call<BaseResponse<Void>> call = UserAPIConfiguration.getInstance().deleteUser(id);
         call.enqueue(new Callback<BaseResponse<Void>>() {
             @Override
-            public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<Void>> call, @NonNull Response<BaseResponse<Void>> response) {
                 if (response.isSuccessful()) {
                     BaseResponse<Void> baseResponse = response.body();
-                    if (baseResponse != null && baseResponse.isSuccess()) {
-                        finish();
-                    } else {
-                        Toast.makeText(AdminViewUserActivity.this, "User Gagal Dihapus", Toast.LENGTH_SHORT).show();
-                        Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));
+                    assert baseResponse != null;
+                    if (baseResponse.isSuccess()) finish();
+                    else {
+                        new AlertDialog.Builder(AdminViewUserActivity.this)
+                                .setTitle("GAGAL")
+                                .setMessage(baseResponse.getMessage())
+                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .show();
                     }
                 } else {
-                    Toast.makeText(AdminViewUserActivity.this, "User Gagal Dihapus", Toast.LENGTH_SHORT).show();
-                    Log.e("API Error", "Response not successfulGAGAL: " + response.code());
+                    new AlertDialog.Builder(AdminViewUserActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .show();
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<Void>> call, Throwable t) {
-                Log.e("API Error", "User Gagal Dihapus");
+            public void onFailure(@NonNull Call<BaseResponse<Void>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminViewUserActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .show();
             }
         });
+    }
+
+    private void populateUserDropdown() {
+        String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, roles);
+        textInputRoleView.setAdapter(adapter);
+
+        textInputRoleView.setOnClickListener(v -> {
+            if (adapter.getCount() > 0) textInputRoleView.showDropDown();
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
     }
 }

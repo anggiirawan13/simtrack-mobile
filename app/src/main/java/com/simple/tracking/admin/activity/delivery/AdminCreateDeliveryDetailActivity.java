@@ -5,20 +5,24 @@ import android.content.Intent;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.Shipper;
 import com.simple.tracking.network.BaseResponse;
+import com.simple.tracking.network.DeliveryAPIConfiguration;
 import com.simple.tracking.network.ShipperAPIConfiguration;
 
 import java.sql.Timestamp;
@@ -26,6 +30,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,8 +45,6 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
     private MaterialAutoCompleteTextView textInputShipperCreate;
     private EditText textInputDeliveryDateCreate;
     private EditText textInputReceiveDateCreate;
-    private ImageView btnBack;
-    private ImageView btnNext;
     private ActivityResultLauncher<Intent> successActivityLauncher;
 
     private List<Shipper> shipperList;
@@ -50,120 +54,135 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_create_delivery_detail);
 
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
+
+        CardView btnGenerateDeliveryNumber = findViewById(R.id.btn_generate_create_delivery_detail);
         textInputDeliveryNumberCreate = findViewById(R.id.textInputDeliveryNumberCreateDeliveryDetail);
         textInputCompanyNameCreate = findViewById(R.id.textInputCompanyNameCreateDeliveryDetail);
         textInputStatusCreate = findViewById(R.id.textInputStatusCreateDeliveryDetail);
         textInputShipperCreate = findViewById(R.id.textInputShipperCreateDeliveryDetail);
         textInputDeliveryDateCreate = findViewById(R.id.textInputDeliveryDateCreateDeliveryDetail);
         textInputReceiveDateCreate = findViewById(R.id.textInputReceiveDateCreateDeliveryDetail);
-        btnBack = findViewById(R.id.btn_back_delivery_detail_create);
-        btnNext = findViewById(R.id.btn_next_delivery_recipient_create);
+        ImageView btnBack = findViewById(R.id.btn_back_delivery_detail_create);
+        ImageView btnNext = findViewById(R.id.btn_next_delivery_recipient_create);
 
         String[] statuses = {"Diproses", "Dikirim", "Diterima"};
 
         ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
         textInputStatusCreate.setAdapter(adapterRole);
 
-        textInputStatusCreate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    textInputStatusCreate.showDropDown();
-                }
-            }
+        textInputStatusCreate.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus)textInputStatusCreate.showDropDown();
         });
 
-        textInputStatusCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textInputStatusCreate.showDropDown();
-            }
-        });
+        btnGenerateDeliveryNumber.setOnClickListener(v -> getDeliveryNumber());
+
+        textInputStatusCreate.setOnClickListener(v -> textInputStatusCreate.showDropDown());
 
         getShippers();
 
-        textInputShipperCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textInputShipperCreate.showDropDown();
-            }
-        });
+        textInputShipperCreate.setOnClickListener(v -> textInputShipperCreate.showDropDown());
 
-        textInputDeliveryDateCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(textInputDeliveryDateCreate);
-            }
-        });
+        textInputDeliveryDateCreate.setOnClickListener(v -> showDatePickerDialog(textInputDeliveryDateCreate));
 
-        textInputReceiveDateCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(textInputReceiveDateCreate);
-            }
-        });
+        textInputReceiveDateCreate.setOnClickListener(v -> showDatePickerDialog(textInputReceiveDateCreate));
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String shipperName = textInputShipperCreate.getText().toString();
+        btnNext.setOnClickListener(v -> {
+            String shipperName = textInputShipperCreate.getText().toString();
 
-                Shipper selectedShipper = shipperList
+            Shipper selectedShipper = null;
+            if (shipperList != null && !shipperList.isEmpty()) {
+                selectedShipper = shipperList
                         .stream()
                         .filter(shipper -> shipper.getUser().getFullname().equals(shipperName))
                         .findFirst()
                         .orElse(null);
-
-                Delivery delivery = new Delivery();
-                delivery.setDeliveryNumber(textInputDeliveryNumberCreate.getText().toString());
-                delivery.setCompanyName(textInputCompanyNameCreate.getText().toString());
-                delivery.setStatus(textInputStatusCreate.getText().toString());
-
-                if (selectedShipper != null) {
-                    delivery.setShipperId(selectedShipper.getId());
-                }
-
-                delivery.setDeliveryDate(null);
-                delivery.setReceiveDate(null);
-
-
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                    String deliveryDateString = textInputDeliveryDateCreate.getText().toString();
-                    if (!deliveryDateString.isEmpty()) {
-                        java.util.Date parsedDate = dateFormat.parse(deliveryDateString);
-                        Timestamp deliveryDateTimestamp = new Timestamp(parsedDate.getTime());
-                        delivery.setDeliveryDate(deliveryDateTimestamp);
-                    }
-
-                    String receiveDateString = textInputReceiveDateCreate.getText().toString();
-                    if (!receiveDateString.isEmpty()) {
-                        java.util.Date parsedDate = dateFormat.parse(receiveDateString);
-                        Timestamp receiveDateTimestamp = new Timestamp(parsedDate.getTime());
-                        delivery.setReceiveDate(receiveDateTimestamp);
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                Intent intent = new Intent(AdminCreateDeliveryDetailActivity.this, AdminCreateDeliveryRecipientActivity.class);
-                intent.putExtra("DELIVERY_DATA", delivery);
-                successActivityLauncher.launch(intent);
             }
+
+            Delivery delivery = new Delivery();
+            delivery.setDeliveryNumber(Objects.requireNonNull(textInputDeliveryNumberCreate.getText()).toString());
+            delivery.setCompanyName(Objects.requireNonNull(textInputCompanyNameCreate.getText()).toString());
+            delivery.setStatus(textInputStatusCreate.getText().toString());
+
+            if (selectedShipper != null) {
+                delivery.setShipperId(selectedShipper.getId());
+            }
+
+            delivery.setDeliveryDate(null);
+            delivery.setReceiveDate(null);
+
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("id-ID"));
+
+                String deliveryDateString = textInputDeliveryDateCreate.getText().toString();
+                if (!deliveryDateString.isEmpty()) {
+                    java.util.Date parsedDate = dateFormat.parse(deliveryDateString);
+                    assert parsedDate != null;
+                    Timestamp deliveryDateTimestamp = new Timestamp(parsedDate.getTime());
+                    delivery.setDeliveryDate(deliveryDateTimestamp);
+                }
+
+                String receiveDateString = textInputReceiveDateCreate.getText().toString();
+                if (!receiveDateString.isEmpty()) {
+                    java.util.Date parsedDate = dateFormat.parse(receiveDateString);
+                    assert parsedDate != null;
+                    Timestamp receiveDateTimestamp = new Timestamp(parsedDate.getTime());
+                    delivery.setReceiveDate(receiveDateTimestamp);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Intent intent = new Intent(AdminCreateDeliveryDetailActivity.this, AdminCreateDeliveryRecipientActivity.class);
+            intent.putExtra("DELIVERY_DATA", delivery);
+            successActivityLauncher.launch(intent);
         });
 
         successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                // Arahkan kembali ke UserFragment
-                finish(); // Menghentikan AdminCreateUserActivity
+                finish();
+            }
+        });
+    }
+
+    private void getDeliveryNumber() {
+        Call<BaseResponse<String>> call = DeliveryAPIConfiguration.getInstance().getDeliveryNumber();
+        call.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse<String>> call, @NonNull Response<BaseResponse<String>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<String> baseResponse = response.body();
+                    if (baseResponse != null && baseResponse.isSuccess()) {
+                        String deliveryNumber = baseResponse.getData();
+                        textInputDeliveryNumberCreate.setText(deliveryNumber);
+                    } else {
+                        new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                                .setTitle("ERROR")
+                                .setMessage("Terjadi kesalahan pada sistem kami.")
+                                .setPositiveButton("OK", null)
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse<String>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", null)
+                        .show();
             }
         });
     }
@@ -172,23 +191,35 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         Call<BaseResponse<List<Shipper>>> call = ShipperAPIConfiguration.getInstance().getShippers(null, false, null, null);
         call.enqueue(new Callback<BaseResponse<List<Shipper>>>() {
             @Override
-            public void onResponse(Call<BaseResponse<List<Shipper>>> call, Response<BaseResponse<List<Shipper>>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<List<Shipper>>> call, @NonNull Response<BaseResponse<List<Shipper>>> response) {
                 if (response.isSuccessful()) {
                     BaseResponse<List<Shipper>> baseResponse = response.body();
                     if (baseResponse != null && baseResponse.isSuccess()) {
                         shipperList = baseResponse.getData();
                         populateShipperDropdown(shipperList);
                     } else {
-                        Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Failed to load users", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                                .setTitle("ERROR")
+                                .setMessage("Terjadi kesalahan pada sistem kami.")
+                                .setPositiveButton("OK", null)
+                                .show();
                     }
                 } else {
-                    Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Response not successful", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", null)
+                            .show();
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<List<Shipper>>> call, Throwable t) {
-                Toast.makeText(AdminCreateDeliveryDetailActivity.this, "Failed to get users", Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<BaseResponse<List<Shipper>>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminCreateDeliveryDetailActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", null)
+                        .show();
             }
         });
     }
@@ -197,7 +228,6 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         ArrayAdapter<Shipper> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, shippers);
         textInputShipperCreate.setAdapter(adapter);
 
-        // Open the dropdown when the text field is clicked
         textInputShipperCreate.setOnClickListener(v -> {
             if (adapter.getCount() > 0) {
                 textInputShipperCreate.showDropDown();
@@ -214,8 +244,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Set the date in yyyy-MM-dd format
-                    String date = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    String date = String.format(Locale.forLanguageTag("id-ID"), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
                     editText.setText(date);
                 },
                 year,
@@ -226,4 +255,12 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!LocationChecker.isLocationEnabled(this)) {
+            LocationChecker.showLocationDisabledDialog(this);
+        }
+    }
 }

@@ -89,7 +89,8 @@
                     android:id="@+id/textInputDeliveryNumberCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Get delivery number" />
+                    android:enabled="false"
+                    android:hint="Delivery Number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -105,7 +106,7 @@
                     android:id="@+id/textInputCompanyNameCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="company name" />
+                    android:hint="Company Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="status"
+                    android:hint="Status"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="shipper"
+                    android:hint="Shipper"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="delivery date"
+                    android:hint="Delivery Date"
                     android:inputType="date"
                     android:focusable="false"
                     tools:layout_editor_absoluteX="58dp"
@@ -188,9 +189,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="receiving date"
+                    android:hint="Receiving Date"
                     android:inputType="date"
                     android:focusable="false"
+                    android:enabled="false"
                     tools:layout_editor_absoluteX="58dp"
                     tools:layout_editor_absoluteY="226dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -208,7 +210,8 @@
                     android:id="@+id/textInputConfirmationCodeCreateDeliveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Auto generate confirmation code" />
+                    android:enabled="false"
+                    android:hint="Auto Generate Confirmation Code" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
