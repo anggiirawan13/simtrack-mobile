@@ -74,6 +74,7 @@
                     android:id="@+id/textInputFullnameUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Fullname"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +91,7 @@
                     android:id="@+id/textInputWhatsappUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Whatsapp"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,6 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start"
+                    android:enabled="false"
                     android:hint="Address"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +126,7 @@
                     android:id="@+id/textInputSubDistrictUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Sub-District"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,6 +143,7 @@
                     android:id="@+id/textInputDistrictUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="District"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,6 +160,7 @@
                     android:id="@+id/textInputCityUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="City"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,6 +177,7 @@
                     android:id="@+id/textInputProvinceUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Province"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,6 +194,7 @@
                     android:id="@+id/textInputPostalCodeUpdateDeliveryRecipient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Postal Code"  />
 
             </com.google.android.material.textfield.TextInputLayout>

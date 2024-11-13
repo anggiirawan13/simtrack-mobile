@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Delivery;
+import com.simple.tracking.model.DeliveryRecipient;
 import com.simple.tracking.model.Shipper;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.DeliveryAPIConfiguration;
@@ -43,6 +46,10 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
     private EditText deliveryDateInput, receivingDateInput;
     private CardView btnDelete, btnUpdate;
     private List<Shipper> shipperList;
+
+    private Delivery delivery;
+    private ActivityResultLauncher<Intent> successActivityLauncher;
+
 
     public static String convertTimestampToString(Timestamp timestamp) {
         if (timestamp == null) return "";
@@ -93,17 +100,19 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
 
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(AdminViewDeliveryDetailActivity.this, AdminViewDeliveryRecipientActivity.class);
-            startActivity(intent);
+            intent.putExtra("DELIVERY_DATA", delivery);
+            successActivityLauncher.launch(intent);
+        });
+
+        successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                finish();
+            }
         });
 
         btnDelete.setOnClickListener(this);
 
-        btnUpdate.setOnClickListener(v -> {
-            enableFields();
-
-            btnDelete.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
-        });
+        btnUpdate.setOnClickListener(this);
     }
 
     private void getShippers() {
@@ -155,7 +164,8 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                 if (response.isSuccessful()) {
                     BaseResponse<Delivery> baseResponse = response.body();
                     if (baseResponse != null && baseResponse.isSuccess()) {
-                        Delivery delivery = baseResponse.getData();
+                        delivery = baseResponse.getData();
+
                         deliveryNumberInput.setText(delivery.getDeliveryNumber());
                         companyNameInput.setText(delivery.getCompanyName());
                         statusSpinner.setText(delivery.getStatus());
@@ -180,6 +190,9 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                         }
 
                         confirmationCodeInput.setText(delivery.getConfirmationCode());
+
+                        if (!delivery.getStatus().equalsIgnoreCase("diterima"))
+                            btnDelete.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(AdminViewDeliveryDetailActivity.this, "Failed to load delivery data", Toast.LENGTH_SHORT).show();
                     }
@@ -232,7 +245,11 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                     .setPositiveButton("YES", (dialog, which) -> {})
                     .setNegativeButton("NO", null)
                     .show();
-        }
+        } else if (view.getId() == R.id.btn_update_delivery_detail_view)
+            enableFields();
+
+            btnDelete.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
     }
 
     @Override

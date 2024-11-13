@@ -46,11 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String userRole = preferenceManager.getUserRole();
             Intent intent;
 
-            if ("SHIPPER".equalsIgnoreCase(userRole)) {
-                intent = new Intent(MainActivity.this, ShipperActivity.class);
-            } else {
+            if (userRole.equalsIgnoreCase("ADMIN"))
                 intent = new Intent(MainActivity.this, AdminActivity.class);
-            }
+            else
+                intent = new Intent(MainActivity.this, ShipperActivity.class);
 
             startActivity(intent);
             finish();
