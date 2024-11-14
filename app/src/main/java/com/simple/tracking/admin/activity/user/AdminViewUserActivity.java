@@ -29,7 +29,7 @@ import retrofit2.Response;
 public class AdminViewUserActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputEditText textInputFullnameView, textInputUsernameView, textInputPasswordView,
             textInputAddressView, textInputSubDistrictView, textInputDistrictView,
-            textInputCityView, textInputProvinceView, textInputPostalCodeView;
+            textInputCityView, textInputProvinceView, textInputPostalCodeView, textInputWhatsappView;
     private MaterialAutoCompleteTextView textInputRoleView;
     private CardView btnDelete, btnUpdate, btnSave;
 
@@ -52,6 +52,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         textInputCityView = findViewById(R.id.textInputCityView);
         textInputProvinceView = findViewById(R.id.textInputProvinceView);
         textInputPostalCodeView = findViewById(R.id.textInputPostalCodeView);
+        textInputWhatsappView = findViewById(R.id.textInputWhatsappViewUser);
         btnDelete = findViewById(R.id.btn_delete_user_view);
         btnUpdate = findViewById(R.id.btn_update_user_view);
         btnSave = findViewById(R.id.btn_save_update_user);
@@ -84,7 +85,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                     new AlertDialog.Builder(AdminViewUserActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     BaseResponse<User> baseResponse = response.body();
@@ -92,13 +93,14 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                         new AlertDialog.Builder(AdminViewUserActivity.this)
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     else {
                         User user = baseResponse.getData();
                         textInputFullnameView.setText(user.getFullname());
                         textInputUsernameView.setText(user.getUsername());
                         textInputPasswordView.setText(user.getPassword());
+                        textInputWhatsappView.setText(user.getAddress().getWhatsapp());
                         textInputRoleView.setText(user.getRole());
                         textInputAddressView.setText(user.getAddress().getStreet());
                         textInputSubDistrictView.setText(user.getAddress().getSubDistrict());
@@ -115,7 +117,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                 new AlertDialog.Builder(AdminViewUserActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
@@ -125,6 +127,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         textInputFullnameView.setEnabled(true);
         textInputUsernameView.setEnabled(true);
         textInputPasswordView.setEnabled(true);
+        textInputWhatsappView.setEnabled(true);
         textInputRoleView.setEnabled(true);
         textInputAddressView.setEnabled(true);
         textInputSubDistrictView.setEnabled(true);
@@ -157,6 +160,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         }
         else if (view.getId() == R.id.btn_save_update_user) {
             Address address = new Address.Builder()
+                    .setWhatsapp(Objects.requireNonNull(textInputWhatsappView.getText()).toString())
                     .setStreet(Objects.requireNonNull(textInputAddressView.getText()).toString())
                     .setSubDistrict(Objects.requireNonNull(textInputSubDistrictView.getText()).toString())
                     .setDistrict(Objects.requireNonNull(textInputDistrictView.getText()).toString())
@@ -195,14 +199,14 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                         new AlertDialog.Builder(AdminViewUserActivity.this)
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     }
                 } else {
                     new AlertDialog.Builder(AdminViewUserActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 }
             }
@@ -212,7 +216,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                 new AlertDialog.Builder(AdminViewUserActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
@@ -231,14 +235,14 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                         new AlertDialog.Builder(AdminViewUserActivity.this)
                                 .setTitle("GAGAL")
                                 .setMessage(baseResponse.getMessage())
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     }
                 } else {
                     new AlertDialog.Builder(AdminViewUserActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 }
             }
@@ -248,7 +252,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                 new AlertDialog.Builder(AdminViewUserActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });

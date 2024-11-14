@@ -29,10 +29,12 @@ import com.simple.tracking.network.DeliveryAPIConfiguration;
 import com.simple.tracking.network.ShipperAPIConfiguration;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,14 +101,63 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
         btnBack.setOnClickListener(v -> finish());
 
         btnNext.setOnClickListener(v -> {
+            String shipperName = shipperSpinner.getText().toString();
+
+            Shipper selectedShipper = null;
+            if (shipperList != null && !shipperList.isEmpty()) {
+                selectedShipper = shipperList
+                        .stream()
+                        .filter(shipper -> shipper.getUser().getFullname().equals(shipperName))
+                        .findFirst()
+                        .orElse(null);
+            }
+
+            if (selectedShipper != null) {
+                delivery.setShipperId(selectedShipper.getId());
+            }
+
+            delivery.setCompanyName(Objects.requireNonNull(companyNameInput.getText()).toString());
+            delivery.setStatus(statusSpinner.getText().toString());
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("id-ID"));
+
+                String deliveryDateString = deliveryDateInput.getText().toString();
+                if (!deliveryDateString.isEmpty()) {
+                    java.util.Date parsedDate = dateFormat.parse(deliveryDateString);
+                    assert parsedDate != null;
+                    Timestamp deliveryDateTimestamp = new Timestamp(parsedDate.getTime());
+                    delivery.setDeliveryDate(deliveryDateTimestamp);
+                }
+
+                String receiveDateString = receivingDateInput.getText().toString();
+                if (!receiveDateString.isEmpty()) {
+                    java.util.Date parsedDate = dateFormat.parse(receiveDateString);
+                    assert parsedDate != null;
+                    Timestamp receiveDateTimestamp = new Timestamp(parsedDate.getTime());
+                    delivery.setReceiveDate(receiveDateTimestamp);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             Intent intent = new Intent(AdminViewDeliveryDetailActivity.this, AdminViewDeliveryRecipientActivity.class);
             intent.putExtra("DELIVERY_DATA", delivery);
+
+            boolean isEdit = btnUpdate.getVisibility() == View.GONE;
+            intent.putExtra("isEdit", isEdit);
+
             successActivityLauncher.launch(intent);
         });
 
         successActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
+                getSharedPreferences("delivery_update_prefs", MODE_PRIVATE).edit().clear().apply();
+                getSharedPreferences("delivery_prefs", MODE_PRIVATE).edit().clear().apply();
                 finish();
+            } else if (result.getResultCode() == RESULT_CANCELED && result.getData() != null) {
+                boolean isEdit = (boolean) result.getData().getBooleanExtra("isEdit", false);
+                if (isEdit) enableFields();
             }
         });
 
@@ -190,9 +241,6 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                         }
 
                         confirmationCodeInput.setText(delivery.getConfirmationCode());
-
-                        if (!delivery.getStatus().equalsIgnoreCase("diterima"))
-                            btnDelete.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(AdminViewDeliveryDetailActivity.this, "Failed to load delivery data", Toast.LENGTH_SHORT).show();
                     }
@@ -234,22 +282,23 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
         shipperSpinner.setEnabled(true);
         deliveryDateInput.setEnabled(true);
         receivingDateInput.setEnabled(true);
+
+        btnDelete.setVisibility(View.GONE);
+        btnUpdate.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_delete_delivery_detail_view) {
+            int id = getIntent().getIntExtra("DELIVERY_ID", -1);
             new AlertDialog.Builder(AdminViewDeliveryDetailActivity.this)
                     .setTitle("KONFIRMASI")
                     .setMessage("Apakah anda yakin ingin menghapus data ini?")
-                    .setPositiveButton("YES", (dialog, which) -> {})
+                    .setPositiveButton("YES", (dialog, which) -> deleteDelivery(id))
                     .setNegativeButton("NO", null)
                     .show();
         } else if (view.getId() == R.id.btn_update_delivery_detail_view)
             enableFields();
-
-            btnDelete.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
     }
 
     @Override
@@ -259,5 +308,41 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
         if (!LocationChecker.isLocationEnabled(this)) {
             LocationChecker.showLocationDisabledDialog(this);
         }
+    }
+
+    public void deleteDelivery(int id) {
+        Call<BaseResponse<Void>> call = DeliveryAPIConfiguration.getInstance().deleteDelivery(id);
+        call.enqueue(new Callback<BaseResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse<Void>> call, @NonNull Response<BaseResponse<Void>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<Void> baseResponse = response.body();
+                    assert baseResponse != null;
+                    if (baseResponse.isSuccess()) finish();
+                    else {
+                        new AlertDialog.Builder(AdminViewDeliveryDetailActivity.this)
+                                .setTitle("GAGAL")
+                                .setMessage(baseResponse.getMessage())
+                                .setPositiveButton("OK", null)
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(AdminViewDeliveryDetailActivity.this)
+                            .setTitle("ERROR")
+                            .setMessage("Terjadi kesalahan pada sistem kami.")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse<Void>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(AdminViewDeliveryDetailActivity.this)
+                        .setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        });
     }
 }

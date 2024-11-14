@@ -115,7 +115,6 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             delivery.setDeliveryDate(null);
             delivery.setReceiveDate(null);
 
-
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("id-ID"));
 

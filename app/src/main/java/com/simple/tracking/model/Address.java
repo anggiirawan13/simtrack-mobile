@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 public class Address implements Serializable {
 
+    private int id;
+
+    private String whatsapp;
     private String street;
     @SerializedName("sub_district")
     private String subDistrict;
@@ -21,6 +24,8 @@ public class Address implements Serializable {
     }
 
     private Address(Builder builder) {
+        this.id = builder.id;
+        this.whatsapp = builder.whatsapp;
         this.street = builder.street;
         this.subDistrict = builder.subDistrict;
         this.district = builder.district;
@@ -29,7 +34,14 @@ public class Address implements Serializable {
         this.postalCode = builder.postalCode;
     }
 
-    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getWhatsapp() {
+        return whatsapp;
+    }
+
     public String getStreet() {
         return street;
     }
@@ -55,12 +67,24 @@ public class Address implements Serializable {
     }
 
     public static class Builder {
+        private int id;
+        private String whatsapp;
         private String street;
         private String subDistrict;
         private String district;
         private String city;
         private String province;
         private String postalCode;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setWhatsapp(String whatsapp) {
+            this.whatsapp = whatsapp;
+            return this;
+        }
 
         public Builder setStreet(String street) {
             this.street = street;

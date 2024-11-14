@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:enabled="false">
+    android:fillViewport="true">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_update_profile_user"
@@ -18,8 +17,7 @@
         app:cardElevation="1dp"
         app:cardMaxElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:enabled="false">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/image_update_profile_user"
@@ -35,15 +33,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:enabled="false">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingBottom="20dp"
-            android:enabled="false">
+            android:paddingBottom="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutFullnameProfileUser"
@@ -52,13 +48,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:enabled="false">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputFullnameProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Fullname" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,13 +65,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFullnameProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFullnameProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputUsernameProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Username" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:enabled="false"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTintMode="src_in"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -95,8 +90,26 @@
                     android:id="@+id/textInputPasswordProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Password"
                     android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutWhatsappProfileUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordProfileUser">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputWhatsappProfileUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Whatsapp"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -108,14 +121,14 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutWhatsappProfileUser">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/textInputRoleProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
+                    android:enabled="false"
                     android:hint="Role"
                     android:paddingLeft="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -127,14 +140,14 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutRoleProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutRoleProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputAddressProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start"
+                    android:enabled="false"
                     android:hint="Address" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,13 +158,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAddressProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAddressProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputSubDistrictProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Sub-District" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,13 +175,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSubDistrictProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSubDistrictProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputDistrictProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="District" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,13 +192,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDistrictProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDistrictProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputCityProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="City" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,13 +209,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCityProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCityProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputProvinceProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Province" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,13 +226,13 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutProvinceProfileUser"
-                android:enabled="false">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutProvinceProfileUser">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputPostalCodeProfileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Postal Code" />
             </com.google.android.material.textfield.TextInputLayout>
 

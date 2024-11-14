@@ -92,7 +92,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
                     new AlertDialog.Builder(AdminCreateShipperActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     BaseResponse<Shipper> baseResponse = response.body();
@@ -111,7 +111,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
                 new AlertDialog.Builder(AdminCreateShipperActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
@@ -126,7 +126,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
                     new AlertDialog.Builder(AdminCreateShipperActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     BaseResponse<List<User>> baseResponse = response.body();
@@ -134,7 +134,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
                         new AlertDialog.Builder(AdminCreateShipperActivity.this)
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     else {
                         userList = baseResponse.getData();
@@ -148,7 +148,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
                 new AlertDialog.Builder(AdminCreateShipperActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });

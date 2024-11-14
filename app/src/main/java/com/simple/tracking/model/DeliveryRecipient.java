@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class DeliveryRecipient extends Address implements Serializable {
+public class DeliveryRecipient implements Serializable {
 
     private int id;
     @SerializedName("delivery_number")

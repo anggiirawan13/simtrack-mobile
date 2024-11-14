@@ -96,6 +96,7 @@ public class DeliveryFragment extends Fragment {
         if (isLoading || isLastPage) return; // Prevent duplicate requests
 
         isLoading = true;
+
         Call<BaseResponse<List<Delivery>>> call = DeliveryAPIConfiguration.getInstance().getDeliveries(query, true, currentPage, PAGE_SIZE);
         call.enqueue(new Callback<BaseResponse<List<Delivery>>>() {
             @Override

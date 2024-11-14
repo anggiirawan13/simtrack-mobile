@@ -33,9 +33,9 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private TextInputEditText textInputFullnameProfileUser, textInputUsernameProfileUser,
-            textInputPasswordProfileUser, textInputAddressProfileUser,
-            textInputSubDistrictProfileUser, textInputDistrictProfileUser, textInputCityProfileUser,
-            textInputProvinceProfileUser, textInputPostalCodeProfileUser;
+            textInputPasswordProfileUser, textInputAddressProfileUser, textInputSubDistrictProfileUser,
+            textInputDistrictProfileUser, textInputCityProfileUser, textInputProvinceProfileUser,
+            textInputPostalCodeProfileUser, textInputWhatsappProfileUser;
     private MaterialAutoCompleteTextView textInputRoleProfileUser;
     private CardView btnUpdate, btnSave;
 
@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         textInputCityProfileUser = view.findViewById(R.id.textInputCityProfileUser);
         textInputProvinceProfileUser = view.findViewById(R.id.textInputProvinceProfileUser);
         textInputPostalCodeProfileUser = view.findViewById(R.id.textInputPostalCodeProfileUser);
+        textInputWhatsappProfileUser = view.findViewById(R.id.textInputWhatsappProfileUser);
         btnSave = view.findViewById(R.id.btn_save_update_profile_user);
         btnUpdate = view.findViewById(R.id.btn_update_profile_user);
 
@@ -132,6 +133,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         textInputUsernameProfileUser.setText(user.getUsername());
                         textInputPasswordProfileUser.setText(user.getPassword());
                         textInputRoleProfileUser.setText(user.getRole());
+                        textInputWhatsappProfileUser.setText(user.getAddress().getWhatsapp());
                         textInputAddressProfileUser.setText(user.getAddress().getStreet());
                         textInputSubDistrictProfileUser.setText(user.getAddress().getSubDistrict());
                         textInputDistrictProfileUser.setText(user.getAddress().getDistrict());
@@ -142,14 +144,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         new AlertDialog.Builder(requireContext())
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     }
                 } else {
                     new AlertDialog.Builder(requireContext())
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 }
             }
@@ -159,13 +161,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
     }
 
     private void enableFields(boolean enable) {
+        textInputWhatsappProfileUser.setEnabled(enable);
         textInputFullnameProfileUser.setEnabled(enable);
         textInputUsernameProfileUser.setEnabled(enable);
         textInputPasswordProfileUser.setEnabled(enable);
@@ -181,6 +184,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_update_profile_user) {
             Address address = new Address.Builder()
+                    .setWhatsapp(Objects.requireNonNull(textInputWhatsappProfileUser.getText()).toString())
                     .setStreet(Objects.requireNonNull(textInputAddressProfileUser.getText()).toString())
                     .setSubDistrict(Objects.requireNonNull(textInputSubDistrictProfileUser.getText()).toString())
                     .setDistrict(Objects.requireNonNull(textInputDistrictProfileUser.getText()).toString())
@@ -220,7 +224,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     new AlertDialog.Builder(requireContext())
                             .setTitle("GAGAL")
                             .setMessage(baseResponse.getMessage())
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     if (!baseResponse.isSuccess())
@@ -238,7 +242,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });

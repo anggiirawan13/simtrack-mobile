@@ -90,11 +90,11 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
         }
     }
 
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_create_delivery_recipient) {
             Address address = new Address.Builder()
+                    .setWhatsapp(Objects.requireNonNull(textInputWhatsappCreate.getText()).toString())
                     .setStreet(Objects.requireNonNull(textInputAddressCreate.getText()).toString())
                     .setSubDistrict(Objects.requireNonNull(textInputSubDistrictCreate.getText()).toString())
                     .setDistrict(Objects.requireNonNull(textInputDistrictCreate.getText()).toString())
@@ -133,14 +133,14 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
                         new AlertDialog.Builder(AdminCreateDeliveryRecipientActivity.this)
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     }
                 } else {
                     new AlertDialog.Builder(AdminCreateDeliveryRecipientActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 }
             }
@@ -150,7 +150,7 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
                 new AlertDialog.Builder(AdminCreateDeliveryRecipientActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });

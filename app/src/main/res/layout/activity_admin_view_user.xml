@@ -119,6 +119,22 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutWhatsappViewUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputWhatsappViewUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Whatsapp"  />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutRoleView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -127,7 +143,7 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordView">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutWhatsappViewUser">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/textInputRoleView"

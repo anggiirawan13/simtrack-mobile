@@ -168,7 +168,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                     new AlertDialog.Builder(AdminViewShipperActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     BaseResponse<Shipper> baseResponse = response.body();
@@ -187,7 +187,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                 new AlertDialog.Builder(AdminViewShipperActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
@@ -204,7 +204,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                     new AlertDialog.Builder(AdminViewShipperActivity.this)
                             .setTitle("GAGAL")
                             .setMessage(baseResponse.getMessage())
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     if (baseResponse.isSuccess()) finish();
@@ -222,7 +222,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                 new AlertDialog.Builder(AdminViewShipperActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });
@@ -237,7 +237,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                     new AlertDialog.Builder(AdminViewShipperActivity.this)
                             .setTitle("ERROR")
                             .setMessage("Terjadi kesalahan pada sistem kami.")
-                            .setPositiveButton("OK", (dialog, which) -> {})
+                            .setPositiveButton("OK", null)
                             .show();
                 else {
                     BaseResponse<List<User>> baseResponse = response.body();
@@ -245,7 +245,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                         new AlertDialog.Builder(AdminViewShipperActivity.this)
                                 .setTitle("ERROR")
                                 .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setPositiveButton("OK", null)
                                 .show();
                     else {
                         userList = baseResponse.getData();
@@ -262,7 +262,7 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
                 new AlertDialog.Builder(AdminViewShipperActivity.this)
                         .setTitle("ERROR")
                         .setMessage("Terjadi kesalahan pada sistem kami.")
-                        .setPositiveButton("OK", (dialog, which) -> {})
+                        .setPositiveButton("OK", null)
                         .show();
             }
         });

@@ -30,7 +30,7 @@ public class AdminCreateUserActivity extends AppCompatActivity implements View.O
     private TextInputEditText textInputFullnameCreate, textInputUsernameCreate,
             textInputPasswordCreate, textInputAddressCreate, textInputSubDistrictCreate,
             textInputDistrictCreate, textInputCityCreate, textInputProvinceCreate,
-            textInputPostalCodeCreate;
+            textInputPostalCodeCreate, textInputWhatsappCreate;
     private MaterialAutoCompleteTextView textInputRoleCreate;
 
     @Override
@@ -52,6 +52,7 @@ public class AdminCreateUserActivity extends AppCompatActivity implements View.O
         textInputCityCreate = findViewById(R.id.textInputCityCreate);
         textInputProvinceCreate = findViewById(R.id.textInputProvinceCreate);
         textInputPostalCodeCreate = findViewById(R.id.textInputPostalCodeCreate);
+        textInputWhatsappCreate = findViewById(R.id.textInputWhatsappCreateUser);
 
         String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
 
@@ -77,6 +78,7 @@ public class AdminCreateUserActivity extends AppCompatActivity implements View.O
         if (view.getId() == R.id.textInputRoleCreate) textInputRoleCreate.showDropDown();
         else if (view.getId() == R.id.btn_save_create_user) {
             Address address = new Address.Builder()
+                    .setWhatsapp(Objects.requireNonNull(textInputWhatsappCreate.getText()).toString())
                     .setStreet(Objects.requireNonNull(textInputAddressCreate.getText()).toString())
                     .setSubDistrict(Objects.requireNonNull(textInputSubDistrictCreate.getText()).toString())
                     .setDistrict(Objects.requireNonNull(textInputDistrictCreate.getText()).toString())
