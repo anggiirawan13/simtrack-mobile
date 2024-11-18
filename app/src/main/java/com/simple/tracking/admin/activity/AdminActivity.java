@@ -17,7 +17,6 @@ import com.simple.tracking.LocationChecker;
 import com.simple.tracking.LogoutActivity;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.adapter.FragmentPagerAdapter;
-import com.simple.tracking.admin.adapter.ShipperFragmentPagerAdapter;
 
 public class AdminActivity extends AppCompatActivity {
 

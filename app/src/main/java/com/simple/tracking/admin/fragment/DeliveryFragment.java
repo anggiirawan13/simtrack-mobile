@@ -34,7 +34,7 @@ public class DeliveryFragment extends Fragment {
     private int currentPage = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    private final int PAGE_SIZE = 10; // Adjust as needed
+    private final int PAGE_SIZE = 10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
