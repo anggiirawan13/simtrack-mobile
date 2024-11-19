@@ -1,22 +1,37 @@
 package com.simple.tracking;
 
+import android.Manifest;
 import android.content.Intent;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.simple.tracking.admin.activity.AdminActivity;
 import com.simple.tracking.admin.activity.ShipperActivity;
+import com.simple.tracking.MainActivity;
+import com.simple.tracking.admin.activity.user.AdminViewUserActivity;
 import com.simple.tracking.model.Auth;
+import com.simple.tracking.model.Shipper;
+import com.simple.tracking.model.User;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.LoginAPIConfiguration;
+import com.simple.tracking.network.ShipperAPIConfiguration;
+import com.simple.tracking.network.UserAPIConfiguration;
 
 import java.util.Objects;
 
@@ -29,10 +44,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextInputEditText username;
     private TextInputEditText password;
 
+//    private ActivityResultLauncher<String> resultLauncher = registerForActivityResult(
+//            new ActivityResultContracts.RequestPermission(), isGranted -> {
+//                if (isGranted) {
+//                    // Permission granted
+//                    // Get device token from firebase
+//                    getFirebaseToken();
+//                } else {
+//                    // Permission denied
+//                }
+//            }
+//    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        requestPermission();
 
         LocationChecker.checkLocationSettings(this, 1000);
 
@@ -41,15 +70,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         PreferenceManager preferenceManager = new PreferenceManager(this);
-
         if (preferenceManager.isLoggedIn()) {
-            String userRole = preferenceManager.getUserRole();
             Intent intent;
 
-            if (userRole.equalsIgnoreCase("ADMIN"))
-                intent = new Intent(MainActivity.this, AdminActivity.class);
-            else
-                intent = new Intent(MainActivity.this, ShipperActivity.class);
+            if (preferenceManager.isAdmin()) intent = new Intent(MainActivity.this, AdminActivity.class);
+            else intent = new Intent(MainActivity.this, ShipperActivity.class);
 
             startActivity(intent);
             finish();
@@ -85,14 +110,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        int userId = baseResponse.getData().getId();
 //                        String userRole = baseResponse.getData().getRole();
                         Intent intent;
-//                        if (userRole.equalsIgnoreCase("ADMIN")) {
+//                        if (userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("ADMINISTRATOR")) {
                             intent = new Intent(MainActivity.this, AdminActivity.class);
 //                        } else {
 //                            intent = new Intent(MainActivity.this, ShipperActivity.class);
 //                        }
 //
                         PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
-                        preferenceManager.saveUser(1, "admin");
+                        preferenceManager.saveUser(1, "ADMIN");
+
+                        getFirebaseToken(1);
 
                         startActivity(intent);
 //                    }
@@ -106,16 +133,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 1000) {
+//            if (resultCode == RESULT_OK) {
+//                // Lokasi telah diaktifkan, Anda bisa lanjutkan operasi
+//            } else {
+//                // Lokasi masih dimatikan, Anda bisa menampilkan pesan atau mengambil tindakan lain
+//            }
+//        }
+//    }
 
-        if (requestCode == 1000) {
-            if (resultCode == RESULT_OK) {
-                // Lokasi telah diaktifkan, Anda bisa lanjutkan operasi
-            } else {
-                // Lokasi masih dimatikan, Anda bisa menampilkan pesan atau mengambil tindakan lain
+//    public void requestPermission() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+//                // Permission already granted
+//            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+//                // You can explain user that why do you need permission (showing dialog or toast message)
+//            } else {
+//                // Request permission
+//                resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+//            }
+//        } else {
+//            // Get device token from firebase
+//            getFirebaseToken();
+//        }
+//    }
+
+    public void getFirebaseToken(int shipperId) {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("FIREBASE GAGAL")
+                            .setMessage(Objects.requireNonNull(task.getException()).getMessage())
+                            .setPositiveButton("OK", null)
+                            .show();
+
+                    return;
+                }
+
+                String token = task.getResult();
+                Log.i("Firebase Token", token);
+                updateDeviceMapping(shipperId, token);
             }
-        }
+        });
     }
+
+    public void updateDeviceMapping(int shipperId, String token) {
+        Shipper shipper = new Shipper.Builder()
+                .setDeviceMapping(token)
+                .build();
+        Call<BaseResponse<Void>> call = ShipperAPIConfiguration.getInstance().updateDeviceMapping(shipperId, shipper);
+        call.enqueue(new Callback<BaseResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse<Void>> call, @NonNull Response<BaseResponse<Void>> response) {
+                BaseResponse<Void> baseResponse = response.body();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse<Void>> call, @NonNull Throwable t) {
+                new AlertDialog.Builder(MainActivity.this).
+                        setTitle("ERROR")
+                        .setMessage("Terjadi kesalahan pada sistem kami.")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        });
+    }
+
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.user.AdminCreateUserActivity;
 import com.simple.tracking.admin.adapter.UserAdapter;
@@ -38,14 +39,12 @@ public class UserFragment extends Fragment {
 
     private UserAdapter userAdapter;
     private RecyclerView recyclerView;
-    private CardView btnAddUser;
-    private MaterialButton btnSearchUser;
     private TextInputEditText textInputSearchUser;
 
     private int currentPage = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    private final int PAGE_SIZE = 10; // Adjust as needed
+    private final int PAGE_SIZE = 10;
 
     private final Handler searchHandler = new Handler();
     private Runnable searchRunnable;
@@ -60,9 +59,12 @@ public class UserFragment extends Fragment {
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewUser);
-        btnAddUser = view.findViewById(R.id.btn_add_user);
-        btnSearchUser = view.findViewById(R.id.btn_search_user);
+        CardView btnAddUser = view.findViewById(R.id.btn_add_user);
+        MaterialButton btnSearchUser = view.findViewById(R.id.btn_search_user);
         textInputSearchUser = view.findViewById(R.id.textInputSearchUser);
+
+        PreferenceManager preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.isAdmin()) btnAddUser.setVisibility(View.VISIBLE);
 
         btnAddUser.setOnClickListener(v -> {
             Intent userCreate = new Intent(requireContext(), AdminCreateUserActivity.class);
@@ -75,7 +77,6 @@ public class UserFragment extends Fragment {
             isLastPage = false;
             isLoading = false;
 
-            // Clear current data in the adapter before performing new search
             if (userAdapter != null) {
                 userAdapter.clearUsers();
             }
@@ -110,15 +111,14 @@ public class UserFragment extends Fragment {
                             userAdapter.clearUsers();
                         }
 
-                        getUsers(null); // Fetch without a query to get all users
+                        getUsers(null);
                     }
                 };
 
-                searchHandler.postDelayed(searchRunnable, 1000); // 1-second delay
+                searchHandler.postDelayed(searchRunnable, 1000);
             }
         });
 
-        // Fetch users from the API
         getUsers(null);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -133,7 +133,7 @@ public class UserFragment extends Fragment {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= PAGE_SIZE) {
-                        getUsers(null); // Load the next page
+                        getUsers(null);
                     }
                 }
             }
@@ -162,7 +162,7 @@ public class UserFragment extends Fragment {
     }
 
     private void getUsers(String query) {
-        if (isLoading || isLastPage) return; // Prevent duplicate requests
+        if (isLoading || isLastPage) return;
 
         isLoading = true;
         Call<BaseResponse<List<User>>> call = UserAPIConfiguration.getInstance().getUsers(query, true, currentPage, PAGE_SIZE);
@@ -176,23 +176,23 @@ public class UserFragment extends Fragment {
                         List<User> users = baseResponse.getData();
 
                         if (currentPage == 1) {
-                            // For the first page, set up the adapter
+
                             userAdapter = new UserAdapter(users);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(userAdapter);
                         } else {
-                            // Add new data to existing list on subsequent pages
+
                             userAdapter.addUsers(users);
                         }
 
-                        // Check if this is the last page
+
                         if (users.size() < PAGE_SIZE) {
                             isLastPage = true;
                         } else {
-                            currentPage++; // Load next page on next scroll
+                            currentPage++;
                         }
                     } else {
-                        isLastPage = true; // No more data
+                        isLastPage = true;
                         Log.d("API Info", "No more users to load");
                     }
                 } else {

@@ -12,8 +12,8 @@ import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.simple.tracking.AdminChecker;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Address;
 import com.simple.tracking.model.User;
@@ -60,9 +60,10 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
         int id = getIntent().getIntExtra("USER_ID", -1);
         getUsers(id);
 
-        if (!AdminChecker.isAdmin(this, id)) {
-            btnDelete.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        if (preferenceManager.isAdmin()) {
+            btnDelete.setVisibility(View.VISIBLE);
+            btnUpdate.setVisibility(View.VISIBLE);
         }
 
         ImageView btnBack = findViewById(R.id.btn_back_view_user);
@@ -194,11 +195,12 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
             public void onResponse(@NonNull Call<BaseResponse<User>> call, @NonNull Response<BaseResponse<User>> response) {
                 if (response.isSuccessful()) {
                     BaseResponse<User> baseResponse = response.body();
-                    if (baseResponse != null && baseResponse.isSuccess()) finish();
+                    assert baseResponse != null;
+                    if (baseResponse.isSuccess()) finish();
                     else {
                         new AlertDialog.Builder(AdminViewUserActivity.this)
                                 .setTitle("ERROR")
-                                .setMessage("Terjadi kesalahan pada sistem kami.")
+                                .setMessage(baseResponse.getMessage())
                                 .setPositiveButton("OK", null)
                                 .show();
                     }

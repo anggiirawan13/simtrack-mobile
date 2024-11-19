@@ -74,12 +74,12 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         textInputStatusCreate.setAdapter(adapterRole);
 
         textInputStatusCreate.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus)textInputStatusCreate.showDropDown();
+            if (hasFocus) textInputStatusCreate.showDropDown();
         });
 
-        btnGenerateDeliveryNumber.setOnClickListener(v -> getDeliveryNumber());
-
         textInputStatusCreate.setOnClickListener(v -> textInputStatusCreate.showDropDown());
+
+        btnGenerateDeliveryNumber.setOnClickListener(v -> getDeliveryNumber());
 
         getShippers();
 

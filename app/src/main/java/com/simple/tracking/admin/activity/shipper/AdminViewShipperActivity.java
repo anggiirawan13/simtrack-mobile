@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Shipper;
 import com.simple.tracking.model.User;
@@ -46,6 +47,15 @@ public class AdminViewShipperActivity extends AppCompatActivity implements View.
 
         textInputUserIdView = findViewById(R.id.textInputUserIdView);
         textInputDeviceMappingView = findViewById(R.id.textInputDeviceMappingView);
+        btnDelete = findViewById(R.id.btn_delete_view_shipper);
+        btnUpdate = findViewById(R.id.btn_update_view_shipper);
+        btnSave = findViewById(R.id.btn_save_view_shipper);
+
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        if (preferenceManager.isAdmin()) {
+            btnDelete.setVisibility(View.VISIBLE);
+            btnUpdate.setVisibility(View.VISIBLE);
+        }
 
         ImageView btnBack = findViewById(R.id.btn_back_view_shipper);
         btnBack.setOnClickListener(this);

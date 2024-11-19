@@ -2,8 +2,11 @@ package com.simple.tracking.model;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
     private final int id;
     private final String password;
@@ -11,6 +14,7 @@ public class User implements Serializable {
     private final String username;
     private final String role;
     private final Address address;
+    private final Shipper shipper;
 
     private User(Builder builder) {
         this.id = builder.id;
@@ -19,6 +23,7 @@ public class User implements Serializable {
         this.username = builder.username;
         this.role = builder.role;
         this.address = builder.address;
+        this.shipper = builder.shipper;
     }
 
     public int getId() {
@@ -45,6 +50,10 @@ public class User implements Serializable {
         return address;
     }
 
+    public Shipper getShipper() {
+        return shipper;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -58,6 +67,7 @@ public class User implements Serializable {
         private String username;
         private String role;
         private Address address;
+        private Shipper shipper;
 
         public Builder setId(int id) {
             this.id = id;
@@ -87,6 +97,10 @@ public class User implements Serializable {
         public Builder setAddress(Address address) {
             this.address = address;
             return this;
+        }
+
+        public void setShipper(Shipper shipper) {
+            this.shipper = shipper;
         }
 
         public User build() {

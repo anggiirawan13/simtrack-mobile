@@ -1,7 +1,10 @@
 package com.simple.tracking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Dashboard implements Serializable {
 
     private int proses;

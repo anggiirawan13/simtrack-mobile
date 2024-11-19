@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.delivery.AdminViewDeliveryRecipientActivity;
 import com.simple.tracking.model.Address;
@@ -55,8 +56,8 @@ public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implem
         btnSaveUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_save_update_delivery_recipient);
         btnUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_update_delivery_recipient_update);
         btnDeleteDeliveryRecipientUpdate = findViewById(R.id.btn_delete_delivery_recipient_update);
-
         ImageView btnBackUpdateDeliveryRecipientUpdate = findViewById(R.id.btn_back_delivery_recipient_update);
+
         btnBackUpdateDeliveryRecipientUpdate.setOnClickListener(this);
 
         btnUpdateDeliveryRecipientUpdate.setOnClickListener(this);
@@ -65,8 +66,21 @@ public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implem
 
         btnDeleteDeliveryRecipientUpdate.setOnClickListener(this);
 
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        if (preferenceManager.isAdmin()) {
+            btnUpdateDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
+            btnDeleteDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
+            btnSaveUpdateDeliveryRecipientUpdate.setVisibility(View.GONE);
+        }
+
         boolean isEdit = getIntent().getBooleanExtra("isEdit", false);
-        if (isEdit) enableFields();
+        if (preferenceManager.isAdmin() && isEdit) {
+            enableFields(true);
+
+            btnUpdateDeliveryRecipientUpdate.setVisibility(View.GONE);
+            btnDeleteDeliveryRecipientUpdate.setVisibility(View.GONE);
+            btnSaveUpdateDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
+        }
 
         loadInputData();
 
@@ -114,7 +128,11 @@ public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implem
                     .setNegativeButton("NO", null)
                     .show();
         } else if (view.getId() == R.id.btn_update_delivery_recipient_update) {
-            enableFields();
+            enableFields(true);
+
+            btnUpdateDeliveryRecipientUpdate.setVisibility(View.GONE);
+            btnDeleteDeliveryRecipientUpdate.setVisibility(View.GONE);
+            btnSaveUpdateDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
         }
     }
 
@@ -127,22 +145,18 @@ public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implem
         }
     }
 
-    private void enableFields() {
-        textInputFullnameUpdate.setEnabled(true);
-        textInputWhatsappUpdate.setEnabled(true);
-        textInputAddressUpdate.setEnabled(true);
-        textInputSubDistrictUpdate.setEnabled(true);
-        textInputDistrictUpdate.setEnabled(true);
-        textInputCityUpdate.setEnabled(true);
-        textInputProvinceUpdate.setEnabled(true);
-        textInputPostalCodeUpdate.setEnabled(true);
-        btnSaveUpdateDeliveryRecipientUpdate.setEnabled(true);
-        btnUpdateDeliveryRecipientUpdate.setEnabled(true);
-        btnDeleteDeliveryRecipientUpdate.setEnabled(true);
-
-        btnSaveUpdateDeliveryRecipientUpdate.setVisibility(View.VISIBLE);
-        btnUpdateDeliveryRecipientUpdate.setVisibility(View.GONE);
-        btnDeleteDeliveryRecipientUpdate.setVisibility(View.GONE);
+    private void enableFields(boolean enable) {
+        textInputFullnameUpdate.setEnabled(enable);
+        textInputWhatsappUpdate.setEnabled(enable);
+        textInputAddressUpdate.setEnabled(enable);
+        textInputSubDistrictUpdate.setEnabled(enable);
+        textInputDistrictUpdate.setEnabled(enable);
+        textInputCityUpdate.setEnabled(enable);
+        textInputProvinceUpdate.setEnabled(enable);
+        textInputPostalCodeUpdate.setEnabled(enable);
+        btnSaveUpdateDeliveryRecipientUpdate.setEnabled(enable);
+        btnUpdateDeliveryRecipientUpdate.setEnabled(enable);
+        btnDeleteDeliveryRecipientUpdate.setEnabled(enable);
     }
 
     private void saveInputData() {
@@ -164,9 +178,6 @@ public class AdminViewDeliveryRecipientActivity extends AppCompatActivity implem
     private void loadInputData() {
         SharedPreferences prefs = getSharedPreferences("delivery_update_prefs", MODE_PRIVATE);
         if (prefs != null && prefs.contains("fullname")) {
-            boolean isEdit = prefs.getBoolean("isEdit", false);
-            if (isEdit) enableFields();
-
             textInputFullnameUpdate.setText(prefs.getString("fullname", ""));
             textInputWhatsappUpdate.setText(prefs.getString("whatsapp", ""));
             textInputAddressUpdate.setText(prefs.getString("address", ""));

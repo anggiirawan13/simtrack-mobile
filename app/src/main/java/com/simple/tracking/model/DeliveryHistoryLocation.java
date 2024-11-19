@@ -1,9 +1,11 @@
 package com.simple.tracking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DeliveryHistoryLocation implements Serializable {
 
     private int id;

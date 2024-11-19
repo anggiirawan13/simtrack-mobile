@@ -1,6 +1,7 @@
 package com.simple.tracking.network;
 
 import com.simple.tracking.model.Shipper;
+import com.simple.tracking.model.User;
 
 import java.util.List;
 
@@ -34,4 +35,7 @@ public interface ShipperAPI {
 
     @DELETE("/api/shippers/{id}")
     Call<BaseResponse<Void>> deleteShipper(@Path("id") int shipperId);
+
+    @PUT("/api/shippers/token/{id}")
+    Call<BaseResponse<Void>> updateDeviceMapping(@Path("id") int shipperId, @Body Shipper shipper);
 }

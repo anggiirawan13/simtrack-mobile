@@ -198,9 +198,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             User user = new User.Builder()
                     .setId(id)
-                    .setPassword(Objects.requireNonNull(textInputPasswordProfileUser.getText()).toString())
                     .setFullname(Objects.requireNonNull(textInputFullnameProfileUser.getText()).toString())
                     .setUsername(Objects.requireNonNull(textInputUsernameProfileUser.getText()).toString())
+                    .setPassword(Objects.requireNonNull(textInputPasswordProfileUser.getText()).toString())
+                    .setRole(Objects.requireNonNull(textInputRoleProfileUser.getText()).toString())
                     .setAddress(address)
                     .build();
 
@@ -227,13 +228,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             .setPositiveButton("OK", null)
                             .show();
                 else {
-                    if (!baseResponse.isSuccess())
-                        new AlertDialog.Builder(requireContext())
-                                .setTitle("ERROR")
-                                .setMessage("Terjadi kesalahan pada sistem kami.")
-                                .setPositiveButton("OK", (dialog, which) -> {
-                                })
-                                .show();
+                    enableFields(false);
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("BERHASIL")
+                            .setMessage("Profile berhasil diubah.")
+                            .setPositiveButton("OK", (dialog, which) -> {
+                            })
+                            .show();
                 }
             }
 

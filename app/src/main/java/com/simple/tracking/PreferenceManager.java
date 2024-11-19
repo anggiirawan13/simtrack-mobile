@@ -41,4 +41,8 @@ public class PreferenceManager {
         editor.clear();
         editor.apply();
     }
+
+    public boolean isAdmin() {
+        return getUserRole().equalsIgnoreCase("ADMIN") || getUserRole().equalsIgnoreCase("ADMINISTRATOR");
+    }
 }

@@ -20,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.DeliveryRecipient;
@@ -82,13 +83,20 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
         btnDelete = findViewById(R.id.btn_delete_delivery_detail_view);
         btnUpdate = findViewById(R.id.btn_update_delivery_detail_view);
 
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        if (preferenceManager.isAdmin()) {
+            btnUpdate.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+        }
+
         getShippers();
 
         String[] statuses = {"Diproses", "Dikirim", "Diterima"};
+
         ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
         statusSpinner.setAdapter(adapterRole);
 
-        statusSpinner.setOnFocusChangeListener((view, hasFocus) -> {
+        statusSpinner.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) statusSpinner.showDropDown();
         });
 
@@ -177,7 +185,6 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                         shipperList = baseResponse.getData();
                         populateShipperDropdown(shipperList);
 
-
                         int id = getIntent().getIntExtra("DELIVERY_ID", 1);
                         getDeliveries(id);
                     } else {
@@ -199,7 +206,6 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
         adapterShipper = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, shippers);
         shipperSpinner.setAdapter(adapterShipper);
 
-
         shipperSpinner.setOnClickListener(v -> {
             if (adapterShipper.getCount() > 0) {
                 shipperSpinner.showDropDown();
@@ -219,7 +225,15 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
 
                         deliveryNumberInput.setText(delivery.getDeliveryNumber());
                         companyNameInput.setText(delivery.getCompanyName());
-                        statusSpinner.setText(delivery.getStatus());
+
+                        String[] statuses = {"Diproses", "Dikirim", "Diterima"};
+
+                        for (String status : statuses) {
+                            if (status.equalsIgnoreCase(delivery.getStatus())) {
+                                statusSpinner.setText(status, false);
+                                break;
+                            }
+                        }
 
                         for (Shipper shipper : shipperList) {
                             if (shipper.getId() == delivery.getShipperId()) {

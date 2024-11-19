@@ -131,6 +131,7 @@
                     android:id="@+id/textInputWhatsappViewUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="Whatsapp"  />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -267,6 +268,7 @@
                 android:layout_marginBottom="20dp"
                 android:outlineAmbientShadowColor="#FFFFFF"
                 android:outlineSpotShadowColor="#FFFFFF"
+                android:visibility="gone"
                 app:cardBackgroundColor="#0000FF"
                 app:cardCornerRadius="100dp"
                 app:cardElevation="1dp"
@@ -292,6 +294,7 @@
                 android:layout_marginBottom="20dp"
                 android:outlineAmbientShadowColor="#FFFFFF"
                 android:outlineSpotShadowColor="#FFFFFF"
+                android:visibility="gone"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"

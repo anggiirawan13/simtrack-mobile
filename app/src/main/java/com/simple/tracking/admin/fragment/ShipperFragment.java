@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.shipper.AdminCreateShipperActivity;
 import com.simple.tracking.admin.adapter.ShipperAdapter;
@@ -39,8 +40,6 @@ public class ShipperFragment extends Fragment {
 
     private ShipperAdapter shipperAdapter;
     private RecyclerView recyclerView;
-    private CardView btnAddShipper;
-    private MaterialButton btnSearchShipper;
     private TextInputEditText textInputSearchShipper;
     private final Handler searchHandler = new Handler();
     private Runnable searchRunnable;
@@ -59,9 +58,12 @@ public class ShipperFragment extends Fragment {
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewShipper);
-        btnAddShipper = view.findViewById(R.id.btn_add_shipper);
-        btnSearchShipper = view.findViewById(R.id.btn_search_shipper);
         textInputSearchShipper = view.findViewById(R.id.textInputSearchShipper);
+        CardView btnAddShipper = view.findViewById(R.id.btn_add_shipper);
+        MaterialButton btnSearchShipper = view.findViewById(R.id.btn_search_shipper);
+
+        PreferenceManager preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.isAdmin()) btnAddShipper.setVisibility(View.VISIBLE);
 
         btnAddShipper.setOnClickListener(v -> {
             Intent shipperCreate = new Intent(requireContext(), AdminCreateShipperActivity.class);
@@ -74,7 +76,7 @@ public class ShipperFragment extends Fragment {
             isLastPage = false;
             isLoading = false;
 
-            // Clear current data in the adapter before performing new search
+
             if (shipperAdapter != null) {
                 shipperAdapter.clearShippers();
             }
@@ -105,15 +107,15 @@ public class ShipperFragment extends Fragment {
                             shipperAdapter.clearShippers();
                         }
 
-                        getShippers(null); // Fetch without a query to get all users
+                        getShippers(null);
                     }
                 };
 
-                searchHandler.postDelayed(searchRunnable, 1000); // 1-second delay
+                searchHandler.postDelayed(searchRunnable, 1000);
             }
         });
 
-        // Fetch shippers from the API
+
         getShippers(null);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -128,7 +130,7 @@ public class ShipperFragment extends Fragment {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= PAGE_SIZE) {
-                        getShippers(null); // Load the next page
+                        getShippers(null);
                     }
                 }
             }
@@ -148,11 +150,11 @@ public class ShipperFragment extends Fragment {
         currentPage = 1;
         isLastPage = false;
 
-        getShippers(null); // Fetch first page of shippers
+        getShippers(null);
     }
 
     private void getShippers(String query) {
-        if (isLoading || isLastPage) return; // Prevent duplicate requests
+        if (isLoading || isLastPage) return;
 
         isLoading = true;
         Call<BaseResponse<List<Shipper>>> call = ShipperAPIConfiguration.getInstance().getShippers(query, true, currentPage, PAGE_SIZE);
@@ -166,23 +168,23 @@ public class ShipperFragment extends Fragment {
                         List<Shipper> shippers = baseResponse.getData();
 
                         if (currentPage == 1) {
-                            // For the first page, set up the adapter
+
                             shipperAdapter = new ShipperAdapter(shippers);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(shipperAdapter);
                         } else {
-                            // Add new data to existing list on subsequent pages
+
                             shipperAdapter.addShippers(shippers);
                         }
 
-                        // Check if this is the last page
+
                         if (shippers.size() < PAGE_SIZE) {
                             isLastPage = true;
                         } else {
-                            currentPage++; // Load next page on next scroll
+                            currentPage++;
                         }
                     } else {
-                        isLastPage = true; // No more data
+                        isLastPage = true;
                         Log.d("API Info", "No more shippers to load");
                     }
                 } else {

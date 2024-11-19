@@ -18,7 +18,6 @@ public interface DeliveryAPI {
     @GET("/api/deliveries")
     Call<BaseResponse<List<Delivery>>> getDeliveries(
             @Query("q") String q,
-            @Query("paginate") boolean paginate,
             @Query("page") Integer page,
             @Query("limit") Integer limit
     );

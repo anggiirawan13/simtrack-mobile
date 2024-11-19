@@ -64,6 +64,7 @@
         android:layout_marginBottom="20dp"
         android:outlineAmbientShadowColor="#CB6040"
         android:outlineSpotShadowColor="#CB6040"
+        android:visibility="gone"
         app:cardBackgroundColor="#CB6040"
         app:cardCornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"

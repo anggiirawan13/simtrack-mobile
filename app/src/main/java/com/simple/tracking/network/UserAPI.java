@@ -23,13 +23,13 @@ public interface UserAPI {
     );
 
     @POST("/api/users")
-    Call<BaseResponse<User>> createUser(@Body User user); // Changed to return a single User
+    Call<BaseResponse<User>> createUser(@Body User user);
 
     @GET("/api/users/{id}")
-    Call<BaseResponse<User>> getUser(@Path("id") int userId); // Changed to return a single User
+    Call<BaseResponse<User>> getUser(@Path("id") int userId);
 
     @PUT("/api/users/{id}")
-    Call<BaseResponse<User>> updateUser(@Path("id") int userId, @Body User user); // Changed to return a single User
+    Call<BaseResponse<User>> updateUser(@Path("id") int userId, @Body User user);
 
     @DELETE("/api/users/{id}")
     Call<BaseResponse<Void>> deleteUser(@Path("id") int userId);

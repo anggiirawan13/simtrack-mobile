@@ -2,6 +2,9 @@ package com.simple.tracking.admin.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryDetailActivity;
 import com.simple.tracking.admin.adapter.DeliveryAdapter;
@@ -25,16 +31,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.List;
+import java.util.Objects;
 
 public class DeliveryFragment extends Fragment {
 
     private DeliveryAdapter deliveryAdapter;
     private RecyclerView recyclerView;
-    private CardView btnAddDelivery;
+    private TextInputEditText searchInput;
     private int currentPage = 1;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     private final int PAGE_SIZE = 10;
+    private final Handler searchHandler = new Handler();
+    private Runnable searchRunnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +55,12 @@ public class DeliveryFragment extends Fragment {
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewDelivery);
-        btnAddDelivery = view.findViewById(R.id.btn_add_delivery);
+        searchInput = view.findViewById(R.id.search_input_delivery);
+        MaterialButton btnSearch = view.findViewById(R.id.btn_search_delivery);
+        CardView btnAddDelivery = view.findViewById(R.id.btn_add_delivery);
+
+        PreferenceManager preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.isAdmin()) btnAddDelivery.setVisibility(View.VISIBLE);
 
         btnAddDelivery.setOnClickListener(v -> {
             Intent deliveryCreate = new Intent(requireContext(), AdminCreateDeliveryDetailActivity.class);
@@ -54,7 +68,6 @@ public class DeliveryFragment extends Fragment {
             startActivity(deliveryCreate);
         });
 
-        // Fetch deliveries from the API
         getDeliveries(null);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -69,9 +82,56 @@ public class DeliveryFragment extends Fragment {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= PAGE_SIZE) {
-                        getDeliveries(null); // Load the next page
+                        getDeliveries(null);
                     }
                 }
+            }
+        });
+
+        btnSearch.setOnClickListener(v -> {
+            currentPage = 1;
+            isLastPage = false;
+            isLoading = false;
+
+            if (deliveryAdapter != null) {
+                deliveryAdapter.clearDeliveries();
+            }
+
+            if (searchInput == null || searchInput.toString().trim().isEmpty()) {
+                getDeliveries(null);
+            } else {
+                getDeliveries(Objects.requireNonNull(searchInput.getText()).toString());
+            }
+        });
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchRunnable != null) {
+                    searchHandler.removeCallbacks(searchRunnable);
+                }
+
+                searchRunnable = () -> {
+                    if (s.toString().isEmpty()) {
+                        currentPage = 1;
+                        isLastPage = false;
+                        isLoading = false;
+
+                        if (deliveryAdapter != null) {
+                            deliveryAdapter.clearDeliveries();
+                        }
+
+                        getDeliveries(null);
+                    }
+                };
+
+                searchHandler.postDelayed(searchRunnable, 1000);
             }
         });
 
@@ -89,18 +149,18 @@ public class DeliveryFragment extends Fragment {
         currentPage = 1;
         isLastPage = false;
 
-        getDeliveries(null); // Fetch first page of deliveries
+        getDeliveries(null);
     }
 
     private void getDeliveries(String query) {
-        if (isLoading || isLastPage) return; // Prevent duplicate requests
+        if (isLoading || isLastPage) return;
 
         isLoading = true;
 
-        Call<BaseResponse<List<Delivery>>> call = DeliveryAPIConfiguration.getInstance().getDeliveries(query, true, currentPage, PAGE_SIZE);
+        Call<BaseResponse<List<Delivery>>> call = DeliveryAPIConfiguration.getInstance().getDeliveries(query, currentPage, PAGE_SIZE);
         call.enqueue(new Callback<BaseResponse<List<Delivery>>>() {
             @Override
-            public void onResponse(Call<BaseResponse<List<Delivery>>> call, Response<BaseResponse<List<Delivery>>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<List<Delivery>>> call, @NonNull Response<BaseResponse<List<Delivery>>> response) {
                 isLoading = false;
                 if (response.isSuccessful()) {
                     BaseResponse<List<Delivery>> baseResponse = response.body();
@@ -108,24 +168,17 @@ public class DeliveryFragment extends Fragment {
                         List<Delivery> deliveries = baseResponse.getData();
 
                         if (currentPage == 1) {
-                            // For the first page, set up the adapter
                             deliveryAdapter = new DeliveryAdapter(deliveries);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                             recyclerView.setAdapter(deliveryAdapter);
                         } else {
-                            // Add new data to existing list on subsequent pages
                             deliveryAdapter.addDeliveries(deliveries);
                         }
 
-                        // Check if this is the last page
-                        if (deliveries.size() < PAGE_SIZE) {
-                            isLastPage = true;
-                        } else {
-                            currentPage++; // Load next page on next scroll
-                        }
+                        if (deliveries.size() < PAGE_SIZE) isLastPage = true;
+                        else currentPage++;
                     } else {
-                        isLastPage = true; // No more data
-                        Log.d("API Info", "No more deliveries to load");
+                        isLastPage = true;
                     }
                 } else {
                     Log.e("API Error", "Response not successful: " + response.code());
@@ -133,7 +186,7 @@ public class DeliveryFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<List<Delivery>>> call, Throwable t) {
+            public void onFailure(@NonNull Call<BaseResponse<List<Delivery>>> call, @NonNull Throwable t) {
                 isLoading = false;
                 Log.e("API Error", "Failed to fetch deliveries: " + t.getMessage());
             }

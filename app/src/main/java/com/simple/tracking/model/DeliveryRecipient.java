@@ -2,10 +2,12 @@ package com.simple.tracking.model;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DeliveryRecipient implements Serializable {
 
     private int id;
