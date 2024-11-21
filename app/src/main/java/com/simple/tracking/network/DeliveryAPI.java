@@ -43,4 +43,12 @@ public interface DeliveryAPI {
 
     @GET("/api/deliveries/generate")
     Call<BaseResponse<String>> getDeliveryNumber();
+
+    @GET("/api/deliveries/shipper")
+    Call<BaseResponse<List<Delivery>>> getDeliveriesShipper(
+            @Query("id") int userId,
+            @Query("q") String q,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 }

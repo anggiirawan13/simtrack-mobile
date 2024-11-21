@@ -14,12 +14,14 @@ import com.simple.tracking.model.Delivery;
 
 import java.util.List;
 
+import kotlin.collections.ArrayDeque;
+
 public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.DeliveryViewHolder> {
 
     private final List<Delivery> deliveryList;
 
     public DeliveryAdapter(List<Delivery> deliveryList) {
-        this.deliveryList = deliveryList;
+        this.deliveryList = deliveryList == null ? new ArrayDeque<>() : deliveryList;
     }
 
     public static class DeliveryViewHolder extends RecyclerView.ViewHolder {

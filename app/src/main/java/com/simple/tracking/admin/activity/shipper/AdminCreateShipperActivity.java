@@ -30,7 +30,6 @@ import retrofit2.Response;
 public class AdminCreateShipperActivity extends AppCompatActivity implements View.OnClickListener {
     private MaterialAutoCompleteTextView textInputUserIdCreate;
     private TextInputEditText textInputDeviceMappingCreate;
-
     private List<User> userList;
 
     @Override
@@ -118,7 +117,7 @@ public class AdminCreateShipperActivity extends AppCompatActivity implements Vie
     }
 
     private void getUsers() {
-        Call<BaseResponse<List<User>>> call = UserAPIConfiguration.getInstance().getUsers(null, false, null, null);
+        Call<BaseResponse<List<User>>> call = UserAPIConfiguration.getInstance().getUsersShipper(null, false, null, null);
         call.enqueue(new Callback<BaseResponse<List<User>>>() {
             @Override
             public void onResponse(@NonNull Call<BaseResponse<List<User>>> call, @NonNull Response<BaseResponse<List<User>>> response) {

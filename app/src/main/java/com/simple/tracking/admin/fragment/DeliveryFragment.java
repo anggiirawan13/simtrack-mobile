@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.PermissionRequest;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -157,7 +158,15 @@ public class DeliveryFragment extends Fragment {
 
         isLoading = true;
 
-        Call<BaseResponse<List<Delivery>>> call = DeliveryAPIConfiguration.getInstance().getDeliveries(query, currentPage, PAGE_SIZE);
+        Call<BaseResponse<List<Delivery>>> call;
+
+        PreferenceManager preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.isAdmin()) {
+            call = DeliveryAPIConfiguration.getInstance().getDeliveries(query, currentPage, PAGE_SIZE);
+        } else {
+            call = DeliveryAPIConfiguration.getInstance().getDeliveriesShipper(preferenceManager.getUserId(), query, currentPage, PAGE_SIZE);
+        }
+
         call.enqueue(new Callback<BaseResponse<List<Delivery>>>() {
             @Override
             public void onResponse(@NonNull Call<BaseResponse<List<Delivery>>> call, @NonNull Response<BaseResponse<List<Delivery>>> response) {
@@ -175,7 +184,7 @@ public class DeliveryFragment extends Fragment {
                             deliveryAdapter.addDeliveries(deliveries);
                         }
 
-                        if (deliveries.size() < PAGE_SIZE) isLastPage = true;
+                        if (deliveries != null && deliveries.size() < PAGE_SIZE) isLastPage = true;
                         else currentPage++;
                     } else {
                         isLastPage = true;

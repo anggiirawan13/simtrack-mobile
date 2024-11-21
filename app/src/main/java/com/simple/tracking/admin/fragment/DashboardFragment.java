@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.simple.tracking.LocationChecker;
+import com.simple.tracking.PreferenceManager;
 import com.simple.tracking.R;
 import com.simple.tracking.model.Dashboard;
 import com.simple.tracking.network.BaseResponse;
@@ -57,7 +58,15 @@ public class DashboardFragment extends Fragment {
     }
 
     public void getDashboard() {
-        Call<BaseResponse<Dashboard>> call = DashboardAPIConfiguration.getInstance().getDashboard(); // Updated to match the new return type
+        Call<BaseResponse<Dashboard>> call;
+
+        PreferenceManager preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.isAdmin()) {
+            call = DashboardAPIConfiguration.getInstance().getDashboard();
+        } else {
+            call = DashboardAPIConfiguration.getInstance().getDashboardShipper(preferenceManager.getUserId());
+        }
+
         call.enqueue(new Callback<BaseResponse<Dashboard>>() {
             @Override
             public void onResponse(Call<BaseResponse<Dashboard>> call, Response<BaseResponse<Dashboard>> response) {
@@ -65,10 +74,10 @@ public class DashboardFragment extends Fragment {
                     BaseResponse<Dashboard> baseResponse = response.body();
                     if (baseResponse != null && baseResponse.isSuccess()) {
                         Dashboard dashboard = baseResponse.getData();
-                        totalDiproses.setText(String.valueOf(dashboard.getProses())); // Assuming getter is getFullname()
-                        totalDikirim.setText(String.valueOf(dashboard.getKirim())); // Assuming getter is getDashboardname()
-                        totalDiterima.setText(String.valueOf(dashboard.getTerima())); // Assuming getter is getPassword(), consider security implications
-                        totalKeseluruhan.setText(String.valueOf(dashboard.getTotal())); // Assuming getter is getRole()
+                        totalDiproses.setText(String.valueOf(dashboard.getProses()));
+                        totalDikirim.setText(String.valueOf(dashboard.getKirim()));
+                        totalDiterima.setText(String.valueOf(dashboard.getTerima()));
+                        totalKeseluruhan.setText(String.valueOf(dashboard.getTotal()));
                     } else {
                         Toast.makeText(requireContext(), "GAGAL", Toast.LENGTH_SHORT).show();
                         Log.e("API Error", "API call was not successful: " + (baseResponse != null ? baseResponse.isSuccess() : "No response"));

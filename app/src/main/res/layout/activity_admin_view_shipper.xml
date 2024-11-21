@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
-                    android:hint="user"
+                    android:hint="User"
                     android:paddingLeft="16dp"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -98,7 +98,7 @@
                     android:id="@+id/textInputDeviceMappingView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="device mapping"
+                    android:hint="Device Mapping"
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 

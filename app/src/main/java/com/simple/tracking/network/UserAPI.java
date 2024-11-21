@@ -33,4 +33,12 @@ public interface UserAPI {
 
     @DELETE("/api/users/{id}")
     Call<BaseResponse<Void>> deleteUser(@Path("id") int userId);
+
+    @GET("/api/users/shipper")
+    Call<BaseResponse<List<User>>> getUsersShipper(
+            @Query("q") String q,
+            @Query("paginate") boolean paginate,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 }

@@ -62,6 +62,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 //        requestPermission();
+        Log.i("jancok brand", Build.BRAND);
+        Log.i("jancok model", Build.MODEL);
+        Log.i("jancok version", Build.VERSION.RELEASE);
+        Log.i("jancok code name", Build.VERSION.CODENAME);
+        Log.i("jancok android code name", getAndroidCodename());
+        Log.i("jancok sdk", String.valueOf(Build.VERSION.SDK_INT));
+        Log.i("jancok manufacture", Build.MANUFACTURER);
+        Log.i("jancok hardware", Build.HARDWARE);
+        Log.i("jancok device", Build.DEVICE);
+        Log.i("jancok product", Build.PRODUCT);
+        Log.i("jancok type", Build.TYPE);
+        Log.i("jancok tags", Build.TAGS);
 
         LocationChecker.checkLocationSettings(this, 1000);
 
@@ -111,15 +123,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        String userRole = baseResponse.getData().getRole();
                         Intent intent;
 //                        if (userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("ADMINISTRATOR")) {
-                            intent = new Intent(MainActivity.this, AdminActivity.class);
+//                            intent = new Intent(MainActivity.this, AdminActivity.class);
 //                        } else {
-//                            intent = new Intent(MainActivity.this, ShipperActivity.class);
+//                            getFirebaseToken(userId);
+                            intent = new Intent(MainActivity.this, ShipperActivity.class);
 //                        }
 //
                         PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
-                        preferenceManager.saveUser(1, "ADMIN");
+                        preferenceManager.saveUser(5, "SHIPPER");
 
-                        getFirebaseToken(1);
+                        getFirebaseToken(5);
 
                         startActivity(intent);
 //                    }
@@ -203,6 +216,79 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
             }
         });
+    }
+
+    public String getAndroidCodename() {
+        int apiLevel = android.os.Build.VERSION.SDK_INT;
+
+        switch (apiLevel) {
+            case 33:
+                return "Tiramisu"; // Android 13
+            case 32:
+                return "Snow Cone v2"; // Android 12L
+            case 31:
+                return "Snow Cone"; // Android 12
+            case 30:
+                return "Red Velvet Cake"; // Android 11
+            case 29:
+                return "Quince Tart"; // Android 10
+            case 28:
+                return "Pie"; // Android 9
+            case 27:
+            case 26:
+                return "Oreo"; // Android 8.0/8.1
+            case 25:
+                return "Nougat"; // Android 7.1
+            case 24:
+                return "Nougat"; // Android 7.0
+            case 23:
+                return "Marshmallow"; // Android 6.0
+            case 22:
+                return "Lollipop"; // Android 5.1
+            case 21:
+                return "Lollipop"; // Android 5.0
+            case 20:
+                return "KitKat Watch"; // Android 4.4W
+            case 19:
+                return "KitKat"; // Android 4.4
+            case 18:
+                return "Jelly Bean"; // Android 4.3
+            case 17:
+                return "Jelly Bean"; // Android 4.2
+            case 16:
+                return "Jelly Bean"; // Android 4.1
+            case 15:
+            case 14:
+                return "Ice Cream Sandwich"; // Android 4.0
+            case 13:
+                return "Honeycomb"; // Android 3.2
+            case 12:
+                return "Honeycomb"; // Android 3.1
+            case 11:
+                return "Honeycomb"; // Android 3.0
+            case 10:
+                return "Gingerbread"; // Android 2.3.3
+            case 9:
+                return "Gingerbread"; // Android 2.3
+            case 8:
+                return "Froyo"; // Android 2.2
+            case 7:
+                return "Eclair"; // Android 2.1
+            case 6:
+                return "Eclair"; // Android 2.0.1
+            case 5:
+                return "Eclair"; // Android 2.0
+            case 4:
+                return "Donut"; // Android 1.6
+            case 3:
+                return "Cupcake"; // Android 1.5
+            case 2:
+                return "Petit Four"; // Android 1.1
+            case 1:
+                return "Base"; // Android 1.0
+            default:
+                return "Unknown";
+        }
     }
 
 }
