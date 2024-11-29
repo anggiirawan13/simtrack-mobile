@@ -12,7 +12,7 @@ public class DeliveryAPIConfiguration {
             synchronized (DeliveryAPIConfiguration.class) {
                 if (retrofit == null) {
                     retrofit = new Retrofit.Builder()
-                            .baseUrl(Config.BASE_URL)
+                            .baseUrl(com.simple.tracking.network.Config.BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                 }

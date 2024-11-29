@@ -18,6 +18,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "default"
+    productFlavors {
+        railway {
+            dimension "default"
+            applicationIdSuffix ".railway"
+            versionNameSuffix "-railway"
+        }
+        ngrok {
+            dimension "default"
+            applicationIdSuffix ".ngrok"
+            versionNameSuffix "-ngrok"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

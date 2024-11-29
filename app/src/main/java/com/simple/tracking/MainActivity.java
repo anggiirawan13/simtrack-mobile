@@ -62,18 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 //        requestPermission();
-        Log.i("jancok brand", Build.BRAND);
-        Log.i("jancok model", Build.MODEL);
-        Log.i("jancok version", Build.VERSION.RELEASE);
-        Log.i("jancok code name", Build.VERSION.CODENAME);
-        Log.i("jancok android code name", getAndroidCodename());
-        Log.i("jancok sdk", String.valueOf(Build.VERSION.SDK_INT));
-        Log.i("jancok manufacture", Build.MANUFACTURER);
-        Log.i("jancok hardware", Build.HARDWARE);
-        Log.i("jancok device", Build.DEVICE);
-        Log.i("jancok product", Build.PRODUCT);
-        Log.i("jancok type", Build.TYPE);
-        Log.i("jancok tags", Build.TAGS);
 
         LocationChecker.checkLocationSettings(this, 1000);
 
