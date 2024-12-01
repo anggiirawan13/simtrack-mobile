@@ -114,13 +114,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                            intent = new Intent(MainActivity.this, AdminActivity.class);
 //                        } else {
 //                            getFirebaseToken(userId);
-                            intent = new Intent(MainActivity.this, ShipperActivity.class);
+                            intent = new Intent(MainActivity.this, AdminActivity.class);
 //                        }
 //
                         PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
-                        preferenceManager.saveUser(5, "SHIPPER");
+                        preferenceManager.saveUser(1, "ADMIN");
 
-                        getFirebaseToken(5);
+                        getFirebaseToken(1);
 
                         startActivity(intent);
 //                    }

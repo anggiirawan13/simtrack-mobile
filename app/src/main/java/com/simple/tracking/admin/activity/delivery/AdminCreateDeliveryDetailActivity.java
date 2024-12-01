@@ -116,7 +116,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             delivery.setReceiveDate(null);
 
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("id-ID"));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.forLanguageTag("id-ID"));
 
                 String deliveryDateString = textInputDeliveryDateCreate.getText().toString();
                 if (!deliveryDateString.isEmpty()) {
@@ -243,7 +243,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    String date = String.format(Locale.forLanguageTag("id-ID"), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    String date = String.format(Locale.forLanguageTag("id-ID"), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear);
                     editText.setText(date);
                 },
                 year,

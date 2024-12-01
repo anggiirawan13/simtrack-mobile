@@ -128,6 +128,7 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
                 if (response.isSuccessful()) {
                     BaseResponse<Delivery> baseResponse = response.body();
                     if (baseResponse != null && baseResponse.isSuccess()) {
+                        setResult(RESULT_OK);
                         finish();
                     } else {
                         new AlertDialog.Builder(AdminCreateDeliveryRecipientActivity.this)
