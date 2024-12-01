@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +22,8 @@ import com.simple.tracking.model.DeliveryRecipient;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.DeliveryAPIConfiguration;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -128,6 +132,15 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
                 if (response.isSuccessful()) {
                     BaseResponse<Delivery> baseResponse = response.body();
                     if (baseResponse != null && baseResponse.isSuccess()) {
+                        Delivery deliveryCreated = baseResponse.getData();
+                        openWhatsApp(
+                                deliveryCreated.getDeliveryNumber(),
+                                deliveryCreated.getCompanyName(),
+                                deliveryCreated.getDeliveryDate(),
+                                delivery.getRecipient().getAddress().getWhatsapp(),
+                                deliveryCreated.getStatus(),
+                                deliveryCreated.getConfirmationCode()
+                        );
                         setResult(RESULT_OK);
                         finish();
                     } else {
@@ -165,4 +178,23 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
             LocationChecker.showLocationDisabledDialog(this);
         }
     }
+    private void openWhatsApp(String deliveryNumber, String companyName, Date deliveryDate, String whatsappNumber, String status, String confirmationCode) {
+        if (whatsappNumber.startsWith("0")) whatsappNumber.substring(0).replace("0", "62");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedShippingDate = dateFormat.format(deliveryDate);
+
+        String message = "Halo, *" + companyName + "*!\nPesanan Anda sudah dibuat dengan nomor resi: *" + deliveryNumber + "*.\n"
+                + "Status pesanan saat ini: *" + status + "*.\n"
+                + "Pesanan akan dikirimkan pada tanggal: *" + formattedShippingDate + "*.\n"
+                + "Gunakan kode konfirmasi berikut untuk mengonfirmasi saat menerima pesanan: *" + confirmationCode + "*.";
+
+
+        String url = "https://wa.me/" + whatsappNumber + "?text=" + Uri.encode(message);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(intent);
+    }
+
 }

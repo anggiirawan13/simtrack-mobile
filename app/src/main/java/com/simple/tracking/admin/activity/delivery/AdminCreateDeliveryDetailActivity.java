@@ -68,16 +68,18 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.btn_back_delivery_detail_create);
         ImageView btnNext = findViewById(R.id.btn_next_delivery_recipient_create);
 
-        String[] statuses = {"Diproses", "Dikirim", "Diterima"};
+        textInputStatusCreate.setText("Diproses");
 
-        ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
-        textInputStatusCreate.setAdapter(adapterRole);
+//        String[] statuses = {"Diproses", "Dikirim", "Diterima"};
 
-        textInputStatusCreate.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) textInputStatusCreate.showDropDown();
-        });
+//        ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
+//        textInputStatusCreate.setAdapter(adapterRole);
 
-        textInputStatusCreate.setOnClickListener(v -> textInputStatusCreate.showDropDown());
+//        textInputStatusCreate.setOnFocusChangeListener((v, hasFocus) -> {
+//            if (hasFocus) textInputStatusCreate.showDropDown();
+//        });
+
+//        textInputStatusCreate.setOnClickListener(v -> textInputStatusCreate.showDropDown());
 
         btnGenerateDeliveryNumber.setOnClickListener(v -> getDeliveryNumber());
 
@@ -106,7 +108,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             Delivery delivery = new Delivery();
             delivery.setDeliveryNumber(Objects.requireNonNull(textInputDeliveryNumberCreate.getText()).toString());
             delivery.setCompanyName(Objects.requireNonNull(textInputCompanyNameCreate.getText()).toString());
-            delivery.setStatus(textInputStatusCreate.getText().toString());
+            delivery.setStatus("Diproses");
 
             if (selectedShipper != null) {
                 delivery.setShipperId(selectedShipper.getId());

@@ -126,7 +126,8 @@
                     android:layout_height="match_parent"
                     android:focusable="false"
                     android:hint="Status"
-                    android:paddingLeft="16dp" />
+                    android:paddingLeft="16dp"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
