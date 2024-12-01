@@ -91,7 +91,7 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
 
         getShippers();
 
-        String[] statuses = {"Diproses", "Dikirim", "Diterima"};
+        String[] statuses = {"Dikirim", "Diterima"};
 
         ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
         statusSpinner.setAdapter(adapterRole);
