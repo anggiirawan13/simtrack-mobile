@@ -1,6 +1,7 @@
 package com.simple.tracking.network;
 
 import com.simple.tracking.model.Auth;
+import com.simple.tracking.model.User;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface LoginAPI {
 
     @Headers("Content-Type: application/json")
     @POST("/api/auth/login")
-    Call<BaseResponse<Auth>> login(@Body Auth auth);
+    Call<BaseResponse<User>> login(@Body Auth auth);
 }

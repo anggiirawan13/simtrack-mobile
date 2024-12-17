@@ -102,7 +102,7 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                         textInputUsernameView.setText(user.getUsername());
                         textInputPasswordView.setText(user.getPassword());
                         textInputWhatsappView.setText(user.getAddress().getWhatsapp());
-                        textInputRoleView.setText(user.getRole());
+                        textInputRoleView.setText(user.getRole().getRole());
                         textInputAddressView.setText(user.getAddress().getStreet());
                         textInputSubDistrictView.setText(user.getAddress().getSubDistrict());
                         textInputDistrictView.setText(user.getAddress().getDistrict());
@@ -170,12 +170,23 @@ public class AdminViewUserActivity extends AppCompatActivity implements View.OnC
                     .setPostalCode(Objects.requireNonNull(textInputPostalCodeView.getText()).toString())
                     .build();
 
+            int roleId = 1;
+            String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
+            for (String role : roles) {
+                if (role.equalsIgnoreCase(textInputRoleView.getText().toString())) {
+                    roleId++;
+                    break;
+                }
+
+                roleId++;
+            }
+
             User user = new User.Builder()
                     .setId(userId)
                     .setPassword(Objects.requireNonNull(textInputPasswordView.getText()).toString())
                     .setFullname(Objects.requireNonNull(textInputFullnameView.getText()).toString())
                     .setUsername(Objects.requireNonNull(textInputUsernameView.getText()).toString())
-                    .setRole(textInputRoleView.getText().toString())
+                    .setRoleId(roleId)
                     .setAddress(address)
                     .build();
 

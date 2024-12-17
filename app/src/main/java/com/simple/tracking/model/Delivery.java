@@ -16,7 +16,7 @@ public class Delivery implements Serializable  {
     private String companyName;
     @SerializedName("shipper_id")
     private int shipperId;
-    private String status;
+    private int statusId;
     @SerializedName("delivery_date")
     private Timestamp deliveryDate;
     @SerializedName("receive_date")
@@ -25,6 +25,8 @@ public class Delivery implements Serializable  {
     private String confirmationCode;
     private DeliveryRecipient recipient;
     private DeliveryHistoryLocation history;
+
+    private Status status;
 
     public int getId() {
         return id;
@@ -58,12 +60,12 @@ public class Delivery implements Serializable  {
         this.shipperId = shipperId;
     }
 
-    public String getStatus() {
-        return status;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     public Timestamp getDeliveryDate() {
@@ -104,5 +106,13 @@ public class Delivery implements Serializable  {
 
     public void setHistory(DeliveryHistoryLocation history) {
         this.history = history;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

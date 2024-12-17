@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             auth.setUsername(Objects.requireNonNull(username.getText()).toString());
             auth.setPassword(Objects.requireNonNull(password.getText()).toString());
 
-            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth);
-            call.enqueue(new Callback<BaseResponse<Auth>>() {
+            Call<BaseResponse<User>> call = LoginAPIConfiguration.getInstance().login(auth);
+            call.enqueue(new Callback<BaseResponse<User>>() {
                 @Override
-                public void onResponse(@NonNull Call<BaseResponse<Auth>> call, @NonNull Response<BaseResponse<Auth>> response) {
-                    BaseResponse<Auth> baseResponse = response.body();
+                public void onResponse(@NonNull Call<BaseResponse<User>> call, @NonNull Response<BaseResponse<User>> response) {
+                    BaseResponse<User> baseResponse = response.body();
                     assert baseResponse != null;
                     if (!baseResponse.isSuccess()) {
                         new AlertDialog.Builder(MainActivity.this).
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 .show();
                     } else {
                         int userId = baseResponse.getData().getId();
-                        String userRole = baseResponse.getData().getRole();
+                        String userRole = baseResponse.getData().getRole().getRole();
                         Intent intent;
                         if (userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("ADMINISTRATOR")) {
                             intent = new Intent(MainActivity.this, AdminActivity.class);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BaseResponse<Auth>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<BaseResponse<User>> call, @NonNull Throwable t) {
                     Log.e("API Error", "Terjadi kesalahan pada sistem.");
                 }
             });

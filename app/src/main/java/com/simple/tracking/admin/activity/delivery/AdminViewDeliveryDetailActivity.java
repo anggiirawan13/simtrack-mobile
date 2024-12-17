@@ -91,7 +91,7 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
 
         getShippers();
 
-        String[] statuses = {"Dikirim", "Diterima"};
+        String[] statuses = {"DIPROSES", "DIKIRIM", "DITERIMA"};
 
         ArrayAdapter<String> adapterRole = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, statuses);
         statusSpinner.setAdapter(adapterRole);
@@ -125,7 +125,17 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
             }
 
             delivery.setCompanyName(Objects.requireNonNull(companyNameInput.getText()).toString());
-            delivery.setStatus(statusSpinner.getText().toString());
+
+            int idx = 1;
+            for (String status : statuses) {
+                if (status.equalsIgnoreCase(statusSpinner.getText().toString())) {
+                    idx++;
+                    break;
+                }
+
+                idx++;
+            }
+            delivery.setStatusId(idx);
 
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.forLanguageTag("id-ID"));
@@ -229,7 +239,7 @@ public class AdminViewDeliveryDetailActivity extends AppCompatActivity implement
                         String[] statuses = {"Diproses", "Dikirim", "Diterima"};
 
                         for (String status : statuses) {
-                            if (status.equalsIgnoreCase(delivery.getStatus())) {
+                            if (status.equalsIgnoreCase(delivery.getStatus().getStatus())) {
                                 statusSpinner.setText(status, false);
                                 break;
                             }

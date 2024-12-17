@@ -87,11 +87,23 @@ public class AdminCreateUserActivity extends AppCompatActivity implements View.O
                     .setPostalCode(Objects.requireNonNull(textInputPostalCodeCreate.getText()).toString())
                     .build();
 
+            int roleId = 1;
+            String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
+            for (String role : roles) {
+                if (role.equalsIgnoreCase(textInputRoleCreate.getText().toString())) {
+                    roleId++;
+                    break;
+                }
+
+                roleId++;
+            }
+
             User user = new User.Builder()
                     .setPassword(Objects.requireNonNull(textInputPasswordCreate.getText()).toString())
                     .setFullname(Objects.requireNonNull(textInputFullnameCreate.getText()).toString())
                     .setUsername(Objects.requireNonNull(textInputUsernameCreate.getText()).toString())
-                    .setRole(textInputRoleCreate.getText().toString()).setAddress(address)
+                    .setRoleId(roleId)
+                    .setAddress(address)
                     .build();
 
             new AlertDialog.Builder(AdminCreateUserActivity.this)

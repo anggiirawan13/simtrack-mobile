@@ -138,7 +138,7 @@ public class AdminCreateDeliveryRecipientActivity extends AppCompatActivity impl
                                 deliveryCreated.getCompanyName(),
                                 deliveryCreated.getDeliveryDate(),
                                 delivery.getRecipient().getAddress().getWhatsapp(),
-                                deliveryCreated.getStatus(),
+                                deliveryCreated.getStatus().getStatus(),
                                 deliveryCreated.getConfirmationCode()
                         );
                         setResult(RESULT_OK);

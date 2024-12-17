@@ -68,7 +68,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.btn_back_delivery_detail_create);
         ImageView btnNext = findViewById(R.id.btn_next_delivery_recipient_create);
 
-        textInputStatusCreate.setText("Diproses");
+        textInputStatusCreate.setText("DIPROSES");
 
 //        String[] statuses = {"Diproses", "Dikirim", "Diterima"};
 
@@ -108,7 +108,7 @@ public class AdminCreateDeliveryDetailActivity extends AppCompatActivity {
             Delivery delivery = new Delivery();
             delivery.setDeliveryNumber(Objects.requireNonNull(textInputDeliveryNumberCreate.getText()).toString());
             delivery.setCompanyName(Objects.requireNonNull(textInputCompanyNameCreate.getText()).toString());
-            delivery.setStatus("Diproses");
+            delivery.setStatusId(1);
 
             if (selectedShipper != null) {
                 delivery.setShipperId(selectedShipper.getId());

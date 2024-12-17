@@ -12,7 +12,9 @@ public class User implements Serializable {
     private final String password;
     private final String fullname;
     private final String username;
-    private final String role;
+    private final int roleId;
+    private final Role role;
+    private final int addressId;
     private final Address address;
     private final Shipper shipper;
 
@@ -24,6 +26,8 @@ public class User implements Serializable {
         this.role = builder.role;
         this.address = builder.address;
         this.shipper = builder.shipper;
+        this.roleId = builder.roleId;
+        this.addressId = builder.addressId;
     }
 
     public int getId() {
@@ -42,8 +46,16 @@ public class User implements Serializable {
         return username;
     }
 
-    public String getRole() {
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public Role getRole() {
         return role;
+    }
+
+    public int getAddressId() {
+        return addressId;
     }
 
     public Address getAddress() {
@@ -65,7 +77,9 @@ public class User implements Serializable {
         private String password;
         private String fullname;
         private String username;
-        private String role;
+        private int roleId;
+        private Role role;
+        private int addressId;
         private Address address;
         private Shipper shipper;
 
@@ -89,8 +103,19 @@ public class User implements Serializable {
             return this;
         }
 
-        public Builder setRole(String role) {
+
+        public Builder setRoleId(int role_id) {
+            this.roleId = role_id;
+            return this;
+        }
+
+        public Builder setRole(Role role) {
             this.role = role;
+            return this;
+        }
+
+        public Builder setAddressId(int address_id) {
+            this.addressId = address_id;
             return this;
         }
 

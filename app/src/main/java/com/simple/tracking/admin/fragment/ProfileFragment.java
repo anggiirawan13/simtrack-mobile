@@ -132,7 +132,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         textInputFullnameProfileUser.setText(user.getFullname());
                         textInputUsernameProfileUser.setText(user.getUsername());
                         textInputPasswordProfileUser.setText(user.getPassword());
-                        textInputRoleProfileUser.setText(user.getRole());
+                        textInputRoleProfileUser.setText(user.getRole().getRole());
                         textInputWhatsappProfileUser.setText(user.getAddress().getWhatsapp());
                         textInputAddressProfileUser.setText(user.getAddress().getStreet());
                         textInputSubDistrictProfileUser.setText(user.getAddress().getSubDistrict());
@@ -196,12 +196,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             PreferenceManager preferenceManager = new PreferenceManager(requireContext());
             int id = preferenceManager.getUserId();
 
+            int roleId = 1;
+            String[] roles = new String[]{"Admin", "Commissioner", "Director", "Shipper"};
+            for (String role : roles) {
+                if (role.equalsIgnoreCase(textInputRoleProfileUser.getText().toString())) {
+                    roleId++;
+                    break;
+                }
+
+                roleId++;
+            }
+
             User user = new User.Builder()
                     .setId(id)
                     .setFullname(Objects.requireNonNull(textInputFullnameProfileUser.getText()).toString())
                     .setUsername(Objects.requireNonNull(textInputUsernameProfileUser.getText()).toString())
                     .setPassword(Objects.requireNonNull(textInputPasswordProfileUser.getText()).toString())
-                    .setRole(Objects.requireNonNull(textInputRoleProfileUser.getText()).toString())
+                    .setRoleId(roleId)
                     .setAddress(address)
                     .build();
 
