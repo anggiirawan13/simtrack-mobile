@@ -90,47 +90,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_login) {
-//            Auth auth = new Auth();
-//            auth.setUsername(Objects.requireNonNull(username.getText()).toString());
-//            auth.setPassword(Objects.requireNonNull(password.getText()).toString());
-//
-//            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth);
-//            call.enqueue(new Callback<BaseResponse<Auth>>() {
-//                @Override
-//                public void onResponse(@NonNull Call<BaseResponse<Auth>> call, @NonNull Response<BaseResponse<Auth>> response) {
-//                    BaseResponse<Auth> baseResponse = response.body();
-//                    assert baseResponse != null;
-//                    if (!baseResponse.isSuccess()) {
-//                        new AlertDialog.Builder(MainActivity.this).
-//                                setTitle("GAGAL")
-//                                .setMessage(baseResponse.getMessage())
-//                                .setPositiveButton("OK", null)
-//                                .show();
-//                    } else {
-//                        int userId = baseResponse.getData().getId();
-//                        String userRole = baseResponse.getData().getRole();
-                        Intent intent;
-//                        if (userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("ADMINISTRATOR")) {
-//                            intent = new Intent(MainActivity.this, AdminActivity.class);
-//                        } else {
-//                            getFirebaseToken(userId);
-                            intent = new Intent(MainActivity.this, AdminActivity.class);
-//                        }
-//
-                        PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
-                        preferenceManager.saveUser(1, "ADMIN");
+            Auth auth = new Auth();
+            auth.setUsername(Objects.requireNonNull(username.getText()).toString());
+            auth.setPassword(Objects.requireNonNull(password.getText()).toString());
 
-                        getFirebaseToken(1);
+            Call<BaseResponse<Auth>> call = LoginAPIConfiguration.getInstance().login(auth);
+            call.enqueue(new Callback<BaseResponse<Auth>>() {
+                @Override
+                public void onResponse(@NonNull Call<BaseResponse<Auth>> call, @NonNull Response<BaseResponse<Auth>> response) {
+                    BaseResponse<Auth> baseResponse = response.body();
+                    assert baseResponse != null;
+                    if (!baseResponse.isSuccess()) {
+                        new AlertDialog.Builder(MainActivity.this).
+                                setTitle("GAGAL")
+                                .setMessage(baseResponse.getMessage())
+                                .setPositiveButton("OK", null)
+                                .show();
+                    } else {
+                        int userId = baseResponse.getData().getId();
+                        String userRole = baseResponse.getData().getRole();
+                        Intent intent;
+                        if (userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("ADMINISTRATOR")) {
+                            intent = new Intent(MainActivity.this, AdminActivity.class);
+                        } else {
+                            getFirebaseToken(userId);
+                            intent = new Intent(MainActivity.this, ShipperActivity.class);
+                        }
+
+                        PreferenceManager preferenceManager = new PreferenceManager(MainActivity.this);
+                        preferenceManager.saveUser(userId, userRole);
+
+                        getFirebaseToken(userId);
 
                         startActivity(intent);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(@NonNull Call<BaseResponse<Auth>> call, @NonNull Throwable t) {
-//                    Log.e("API Error", "Terjadi kesalahan pada sistem.");
-//                }
-//            });
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<BaseResponse<Auth>> call, @NonNull Throwable t) {
+                    Log.e("API Error", "Terjadi kesalahan pada sistem.");
+                }
+            });
         }
     }
 

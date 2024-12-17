@@ -20,7 +20,7 @@ public class FirebaseService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
 
-        Log.d("Firebase Message", Objects.requireNonNull(message.getNotification()).getBody());
+        Log.d("Firebase Message", Objects.requireNonNull(Objects.requireNonNull(message.getNotification()).getBody()));
 
         sendNotification(Objects.requireNonNull(message.getNotification()).getTitle(), Objects.requireNonNull(message.getNotification()).getBody());
     }
@@ -29,7 +29,7 @@ public class FirebaseService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CharSequence channelName = "Default";
             String channelId = "default_channel";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
