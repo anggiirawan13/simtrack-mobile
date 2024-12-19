@@ -1,6 +1,7 @@
 package com.simple.tracking.network;
 
 import com.simple.tracking.model.Delivery;
+import com.simple.tracking.model.DeliveryHistoryLocation;
 
 import java.util.List;
 
@@ -51,4 +52,7 @@ public interface DeliveryAPI {
             @Query("page") Integer page,
             @Query("limit") Integer limit
     );
+
+    @POST("/api/deliveries/update/location")
+    Call<BaseResponse<Void>> updateLocation(@Body DeliveryHistoryLocation deliveryHistoryLocation);
 }
