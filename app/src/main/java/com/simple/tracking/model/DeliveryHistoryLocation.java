@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeliveryHistoryLocation implements Serializable {
 
     private int id;
-    @SerializedName("delivery_number")
-    private String deliveryNumber;
+    @SerializedName("delivery_id")
+    private int deliveryId;
     private String latitude;
     private String longitude;
 
@@ -22,12 +23,12 @@ public class DeliveryHistoryLocation implements Serializable {
         this.id = id;
     }
 
-    public String getDeliveryNumber() {
-        return deliveryNumber;
+    public int getdeliveryId() {
+        return deliveryId;
     }
 
-    public void setDeliveryNumber(String deliveryNumber) {
-        this.deliveryNumber = deliveryNumber;
+    public void setdeliveryId(int deliveryId) {
+        this.deliveryId = deliveryId;
     }
 
     public String getLatitude() {

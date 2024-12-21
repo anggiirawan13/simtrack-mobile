@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class DeliveryRecipient implements Serializable {
 
     private int id;
-    @SerializedName("delivery_number")
-    private String deliveryNumber;
+    @SerializedName("delivery_id")
+    private int deliveryId;
     private String name;
     private Address address;
 
@@ -21,7 +21,7 @@ public class DeliveryRecipient implements Serializable {
 
     private DeliveryRecipient(Builder builder) {
         this.id = builder.id;
-        this.deliveryNumber = builder.deliveryNumber;
+        this.deliveryId = builder.deliveryId;
         this.name = builder.name;
         this.address = builder.address;
     }
@@ -30,8 +30,8 @@ public class DeliveryRecipient implements Serializable {
         return id;
     }
 
-    public String getDeliveryNumber() {
-        return deliveryNumber;
+    public int getdeliveryId() {
+        return deliveryId;
     }
 
     public String getName() {
@@ -45,12 +45,12 @@ public class DeliveryRecipient implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "DeliveryRecipient{" + "id=" + id + ", deliveryNumber='" + deliveryNumber + '\'' + ", name='" + name + '\'' + '}';
+        return "DeliveryRecipient{" + "id=" + id + ", deliveryId='" + deliveryId + '\'' + ", name='" + name + '\'' + '}';
     }
 
     public static class Builder {
         private int id;
-        private String deliveryNumber;
+        private int deliveryId;
         private String name;
         private Address address;
 
@@ -60,8 +60,8 @@ public class DeliveryRecipient implements Serializable {
             return this;
         }
 
-        public Builder setDeliveryNumber(String deliveryNumber) {
-            this.deliveryNumber = deliveryNumber;
+        public Builder setdeliveryId(int deliveryId) {
+            this.deliveryId = deliveryId;
             return this;
         }
 
