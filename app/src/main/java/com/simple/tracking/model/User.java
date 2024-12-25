@@ -3,6 +3,7 @@ package com.simple.tracking.model;
 import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -12,8 +13,10 @@ public class User implements Serializable {
     private final String password;
     private final String fullname;
     private final String username;
+    @SerializedName("role_id")
     private final int roleId;
     private final Role role;
+    @SerializedName("address_id")
     private final int addressId;
     private final Address address;
     private final Shipper shipper;
