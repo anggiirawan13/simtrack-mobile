@@ -8,7 +8,6 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -17,8 +16,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.simple.tracking.admin.activity.delivery.AdminCreateDeliveryRecipientActivity;
-import com.simple.tracking.model.Delivery;
 import com.simple.tracking.model.DeliveryHistoryLocation;
 import com.simple.tracking.network.BaseResponse;
 import com.simple.tracking.network.DeliveryAPIConfiguration;
