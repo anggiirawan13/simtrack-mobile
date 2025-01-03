@@ -37,9 +37,14 @@ public class FirebaseService extends FirebaseMessagingService {
 
         Log.d("Firebase Message", Objects.requireNonNull(Objects.requireNonNull(message.getNotification()).getBody()));
 
-        sendNotification(Objects.requireNonNull(message.getNotification()).getTitle(), Objects.requireNonNull(message.getNotification()).getBody());
+        String body = Objects.requireNonNull(message.getNotification()).getBody();
+        String[] arrBody = body.split("~");
+        int id = Integer.parseInt(arrBody[0]);
+        String deliveryNumber = arrBody[1];
 
-        getCurrentLocation(Integer.parseInt(Objects.requireNonNull(message.getNotification()).getBody()));
+        sendNotification(Objects.requireNonNull(message.getNotification()).getTitle(), deliveryNumber);
+
+        getCurrentLocation(id);
     }
 
     private void sendNotification(String title, String messageBody) {
