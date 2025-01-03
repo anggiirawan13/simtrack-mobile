@@ -39,7 +39,7 @@ public class FirebaseService extends FirebaseMessagingService {
 
         sendNotification(Objects.requireNonNull(message.getNotification()).getTitle(), Objects.requireNonNull(message.getNotification()).getBody());
 
-        getCurrentLocation(Objects.requireNonNull(message.getNotification()).getBody());
+        getCurrentLocation(Integer.parseInt(Objects.requireNonNull(message.getNotification()).getBody()));
     }
 
     private void sendNotification(String title, String messageBody) {
@@ -63,14 +63,12 @@ public class FirebaseService extends FirebaseMessagingService {
         notificationManager.notify(0, notificationBuilder.build());
     }
 
-    public void updateLocation(String deliveryNumber, double latitude, double longitude) {
-        // Buat objek DeliveryHistoryLocation
+    public void updateLocation(int deliveryId, double latitude, double longitude) {
         DeliveryHistoryLocation deliveryHistoryLocation = new DeliveryHistoryLocation();
-        deliveryHistoryLocation.setDeliveryNumber(deliveryNumber);
+        deliveryHistoryLocation.setdeliveryId(deliveryId);
         deliveryHistoryLocation.setLatitude(String.valueOf(latitude));
         deliveryHistoryLocation.setLongitude(String.valueOf(longitude));
 
-        // Kirim permintaan ke API
         Call<BaseResponse<Void>> call = DeliveryAPIConfiguration.getInstance().updateLocation(deliveryHistoryLocation);
         call.enqueue(new Callback<BaseResponse<Void>>() {
             @Override
@@ -94,7 +92,7 @@ public class FirebaseService extends FirebaseMessagingService {
         });
     }
 
-    private void getCurrentLocation(String deliveryNumber) {
+    private void getCurrentLocation(int deliveryId) {
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try {
@@ -109,7 +107,7 @@ public class FirebaseService extends FirebaseMessagingService {
                         Log.d("Location Update", "Latitude: " + latitude + ", Longitude: " + longitude);
 
                         // Kirim lokasi ke fungsi updateLocation
-                        updateLocation(deliveryNumber, latitude, longitude);
+                        updateLocation(deliveryId, latitude, longitude);
                     } else {
                         Log.e("Location Update", "Failed to get location.");
                     }
